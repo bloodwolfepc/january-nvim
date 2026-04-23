@@ -58,67 +58,81 @@ local keymaps = {
 					M = "man_pages",
 					B = "builtin",
 					e = "symbols",
+					g = {
+						c = "git_commits",
+						b = "git_bcommits",
+						v = "git_bcommits_range",
+						s = "git_status",
+						S = "git_stash",
+						B = "git_branches",
+					},
 				},
 			},
 		},
 	},
 }
 
-util.lznWrapper({
-	"telescope.nvim",
-	cmd = "telescope",
-	load = function(name)
-		util.addPacks(name, {
-			"telescope-fzf-native.nvim",
-			"telescope-ui-select.nvim",
-			"telescope-symbols.nvim",
-			"telescope-emoji.nvim",
-			"telescope-github.nvim",
-			"telescope-git-conflicts.nvim",
-			"telescope-coc.nvim",
-			"telescope-dap.nvim",
-			"telescope-undo.nvim",
-			"telescope-zoxide",
-			"telescope-manix",
-		})
-	end,
-	after = function()
-		for _, v in ipairs({
-			"fzf",
-			"zoxide",
-			"telescope-manix",
-			"emoji",
-			"gh",
-			"conflicts",
-			"coc",
-			"dap",
-			"undo",
-			"manix",
-		}) do
-			pcall(require("telescope").load_extension, v)
-		end
+local extraConf = function()
+	for _, v in ipairs({
+		"fzf",
+		"zoxide",
+		"telescope-manix",
+		"emoji",
+		"gh",
+		"conflicts",
+		"coc",
+		"dap",
+		"undo",
+		"manix",
+	}) do
+		pcall(require("telescope").load_extension, v)
+	end
 
-		--fullscreen autocmd
-		local temp_showtabline
-		local temp_laststatus
-		function _G.global_telescope_find_pre()
-			temp_showtabline = vim.o.showtabline
-			temp_laststatus = vim.o.laststatus
-			vim.o.showtabline = 0
-			vim.o.laststatus = 0
-		end
-		function _G.global_telescope_leave_prompt()
-			vim.o.laststatus = temp_laststatus
-			vim.o.showtabline = temp_showtabline
-		end
-		vim.cmd([[
-        augroup MyAutocmds
-          autocmd!
-          autocmd User TelescopeFindPre lua global_telescope_find_pre()
-          autocmd FileType TelescopePrompt autocmd BufLeave <buffer> lua global_telescope_leave_prompt()
-        augroup END
-      ]])
+	--fullscreen autocmd
+	local temp_showtabline
+	local temp_laststatus
+	function _G.global_telescope_find_pre()
+		temp_showtabline = vim.o.showtabline
+		temp_laststatus = vim.o.laststatus
+		vim.o.showtabline = 0
+		vim.o.laststatus = 0
+	end
+	function _G.global_telescope_leave_prompt()
+		vim.o.laststatus = temp_laststatus
+		vim.o.showtabline = temp_showtabline
+	end
+	vim.cmd([[
+    augroup MyAutocmds
+      autocmd!
+      autocmd User TelescopeFindPre lua global_telescope_find_pre()
+      autocmd FileType TelescopePrompt autocmd BufLeave <buffer> lua global_telescope_leave_prompt()
+    augroup END
+  ]])
+end
 
-		require("telescope").setup({ config })
-	end,
-}, keymaps)
+require("lz.n").load({
+	{
+		"telescope.nvim",
+		cmd = "Telescope",
+		keys = util.keymapsForLzn(keymaps),
+		load = function(name)
+			util.addPacks(name, {
+				"telescope-fzf-native.nvim",
+				"telescope-ui-select.nvim",
+				"telescope-symbols.nvim",
+				"telescope-emoji.nvim",
+				"telescope-github.nvim",
+				"telescope-git-conflicts.nvim",
+				"telescope-coc.nvim",
+				"telescope-dap.nvim",
+				"telescope-undo.nvim",
+				"telescope-zoxide",
+				"telescope-manix",
+			})
+		end,
+		after = function()
+			extraConf()
+			require("telescope").setup(config)
+		end,
+	},
+})

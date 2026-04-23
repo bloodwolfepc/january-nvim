@@ -2,14 +2,10 @@ require("main.opts")
 
 require("theme").load()
 
+require("main.telescope")
+require("main.yanky")
+
 require("lz.n").load({
-	{
-		"telescope.nvim",
-		event = "DeferredUIEnter",
-		after = function()
-			require("telescope").setup()
-		end,
-	},
 	{
 		"nvim-web-devicons",
 		event = "DeferredUIEnter",
@@ -179,6 +175,15 @@ require("lz.n").load({
 			end, { desc = "toggle wrapping" })
 		end,
 	},
+	{
+		"which-key.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("which-key").setup()
+			require("which-key").add({
+				{ "<leader>f", group = "telescope" },
+				{ "<leader>f_", hidden = true },
+			})
+		end,
+	},
 })
-
-require("main.telescope")

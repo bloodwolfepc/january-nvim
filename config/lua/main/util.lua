@@ -118,7 +118,7 @@ local function parseKeymaps(keymaps)
 	return out
 end
 
-function M.keymapsForLzn(keymaps)
+M.keymapsForLzn = function(keymaps)
 	local flattened_maps = parseKeymaps(keymaps)
 	local result = {}
 	for _, val in ipairs(flattened_maps) do
