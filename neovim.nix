@@ -11,6 +11,7 @@ let
   packageName = "nvim";
 
   runtimeDeps = with pkgs; [
+    lua54Packages.lua-utils-nvim
     stdenv.cc.cc
     ripgrep
     fd
