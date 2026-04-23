@@ -126,6 +126,18 @@ let
     project-nvim
     telescope-media-files-nvim
     telescope-manix
+
+    blink-cmp
+    blink-cmp-dictionary
+    blink-cmp-words
+    blink-cmp-spell
+    blink-cmp-latex
+    blink-cmp-git
+    blink-cmp-avante
+    blink-cmp-yanky
+    blink-emoji-nvim
+    blink-cmp-nixpkgs-maintainers
+
     nvim-cmp
     luasnip
     friendly-snippets

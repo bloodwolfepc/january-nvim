@@ -1,9 +1,7 @@
--- This is custom system prompt for Copilot adapter
--- Based on https://github.com/olimorris/codecompanion.nvim/blob/e7d931ae027f9fdca2bd7c53aa0a8d3f8d620256/lua/codecompanion/config.lua#L639 and https://github.com/CopilotC-Nvim/CopilotChat.nvim/blob/d43fab67c328946fbf8e24fdcadfdb5410517e1f/lua/CopilotChat/prompts.lua#L5
+local M = {}
 
-local M = { }
-
-M.system_prompt = string.format([[
+M.system_prompt = string.format(
+	[[
   You are an AI programming assistant named "GitHub Copilot".
   You are currently plugged in to the Neovim text editor on a user's machine.
 
@@ -40,7 +38,7 @@ M.system_prompt = string.format([[
   4. You can only give one reply for each conversation turn.
   5. The active document is the source code the user is looking at right now.
 ]],
-  vim.loop.os_uname().sysname
+	vim.loop.os_uname().sysname
 )
 
 M.copilot_explain = string.format([[
@@ -111,6 +109,4 @@ M.commit = string.format([[
 
 ]])
 
-
 return M
-

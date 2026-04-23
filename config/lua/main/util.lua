@@ -140,4 +140,11 @@ M.lznWrapper = function(config, keymaps)
 	end
 end
 
+M.keymapsForVim = function(keymaps)
+	local flattened_maps = parseKeymaps(keymaps)
+	for _, val in ipairs(flattened_maps) do
+		vim.keymap.set(val.mode, val.keyseq, val.command, { desc = val.desc })
+	end
+end
+
 return M
