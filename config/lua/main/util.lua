@@ -56,7 +56,7 @@ local function parseKeymaps(keymaps)
 						})
 					end
 
-				-- { command, opts }
+				-- value is { command, opts }
 				else
 					local command = val[1]
 					local opts = val[2] or {}
@@ -79,8 +79,8 @@ local function parseKeymaps(keymaps)
 					})
 				end
 
-			-- CASE 3: string command
-			elseif type(val) == "string" then
+			-- CASE 3: string command or function
+			elseif type(val) == "string" or type(val) == "function" then
 				local passthrough = true
 				local command = val
 

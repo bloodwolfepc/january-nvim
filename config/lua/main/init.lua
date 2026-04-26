@@ -9,6 +9,11 @@ require("main.yanky")
 require("main.avante")
 require("main.completion")
 
+vim.diagnostic.config({
+	virtual_text = true,
+	virtual_lines = false,
+})
+
 require("lz.n").load({
 	{
 		"nvim-web-devicons",

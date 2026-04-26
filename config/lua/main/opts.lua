@@ -36,8 +36,8 @@ local options = {
 	timeoutlen = 300,
 	updatetime = 50,
 	writebackup = false,
-	expandtab = true,
 	shiftwidth = 2,
+	expandtab = true,
 	tabstop = 2,
 	softtabstop = 2,
 	cursorline = false,
@@ -49,10 +49,12 @@ local options = {
 	numberwidth = 4,
 	signcolumn = "number",
 	wrap = false,
-	scrolloff = 0,
-	sidescrolloff = 8,
+	scrolloff = 999,
+	sidescrolloff = 64,
 	title = true,
 	colorcolumn = "100",
+	virtualedit = "block",
+	inccommand = "split",
 }
 opt.shortmess:append("c")
 

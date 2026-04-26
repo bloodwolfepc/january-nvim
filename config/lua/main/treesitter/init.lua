@@ -19,67 +19,35 @@ local config = {
 				["@function.outer"] = "V",
 				["@class.outer"] = "<c-v>",
 			},
-			keymaps = {
-				["aa"] = { query = "@parameter.outer", desc = "@parameter.outer" },
-				["ia"] = { query = "@parameter.inner", desc = "@parameter.inner" },
-				["af"] = { query = "@function.outer", desc = "@function.outer" },
-				["if"] = { query = "@function.inner", desc = "@function.inner" },
-				["ac"] = { query = "@class.outer", desc = "@class.outer" },
-				["ic"] = { query = "@class.inner", desc = "@class.inner" },
-			},
 		},
 		move = {
 			enable = true,
 			set_jumps = true,
-			goto_next_start = {
-				["]m"] = { query = "@function.outer", desc = "@function.outer" },
-				["]]"] = { query = "@class.outer", desc = "@class.outer" },
-			},
-			goto_next_end = {
-				["]M"] = { query = "@function.outer", desc = "@function.outer" },
-				["]["] = { query = "@class.outer", desc = "@class.outer" },
-			},
-			goto_previous_start = {
-				["[m"] = { query = "@function.outer", desc = "@function.outer" },
-				["[["] = { query = "@class.outer", desc = "@class.outer" },
-			},
-			goto_previous_end = {
-				["[M"] = { query = "@function.outer", desc = "@function.outer" },
-				["[]"] = { query = "@class.outer", desc = "@class.outer" },
-			},
 		},
 		swap = {
 			enable = true,
-			swap_next = {
-				["<leader>ta"] = { query = "@parameter.inner", desc = "@parameter.inner" },
-			},
-			swap_previous = {
-				["<leader>tt"] = { query = "@parameter.inner", desc = "@parameter.inner" },
-			},
 		},
 		lsp_interop = {
 			enable = true,
 			border = "none",
-			floating_preview_opts = {},
-			peek_definition_code = {
-				["<leader>df"] = { query = "@function.outer", desc = "@function.outer" },
-				["<leader>dF"] = { query = "@class.outer", desc = "@class.outer" },
-			},
 		},
 	},
 }
 
 local keymaps = {
+
+	--Treesitter selection
 	{
 		mode = { "n" },
 		builder = {
 			passthough = function(p)
 				require("nvim-treesitter.incremental_selection")()[p]()
 			end,
+			descmode = "inherit",
 		},
 		keys = {
 			["<leader>"] = {
-				l = {
+				s = {
 					{
 						mode = { "n" },
 						keys = {
@@ -98,23 +66,85 @@ local keymaps = {
 			},
 		},
 	},
+
+	--Textobjects selection
+	{
+		mode = { "x", "o" },
+		builder = {
+			passthough = function(p)
+				require("nvim-treesitter-textobjects.select").select_textobject(p, "textobjects")
+			end,
+			descmode = "inherit",
+		},
+		keys = {
+			["aa"] = "@parameter.outer",
+			["ia"] = "@parameter.inner",
+			["af"] = "@function.outer",
+			["if"] = "@parameter.inner",
+			["ac"] = "@class.outer",
+			["ic"] = "@class.inner",
+		},
+	},
+
+	--Textobjects move
+	{
+		mode = { "n", "x", "o" },
+		builder({
+			passthough = function(p)
+				return {
+					require("nvim-treesitter-textobjects.move")()[p[1]](p[2], p[3]),
+					{ desc = "TSTO move: " .. p[1] .. p[2] },
+				}
+			end,
+		}),
+		keys = {
+			["]m"] = { "goto_next_start", "@function.outer", "textobjects" },
+			["]]"] = { "goto_next_start", "@class.outer", "textobjects" },
+			["]o"] = { "goto_next_start", { "@loop.inner", "@loop.outer" }, "textobjects" },
+			["]s"] = { "goto_next_start", "@local.scope", "local" },
+			["]z"] = { "goto_next_start", "@fold", "folds" },
+
+			["]M"] = { "goto_next_end", "@function.outer", "textobjects" },
+			["]["] = { "goto_next_end", "@class.outer", "textobjects" },
+
+			["[m"] = { "goto_previous_start", "@function.outer", "textobjects" },
+			["[["] = { "goto_previous_start", "@class.outer", "textobjects" },
+
+			["[M"] = { "goto_previous_end", "@function.outer", "textobjects" },
+			["[]"] = { "goto_previous_end", "@class.outer", "textobjects" },
+
+			["]d"] = { "goto_next", "@function.outer", "textobjects" },
+			["[d"] = { "goto_previous", "@conditional.outer", "textobjects" },
+		},
+	},
+
+	--Textobjexts swap
+	{
+		mode = { "n" },
+		builder({
+			passthough = function(p)
+				require("nvim-treesitter-textobjects.move")()[p[1]](p[2])
+			end,
+		}),
+		keys = {
+			["<leader>ta"] = { "swap_next", "@parameter.inner" },
+			["<leader>tt"] = { "swap_previous", "@parameter.outer" },
+		},
+	},
 }
 
 local extraConfig = function()
-	-- local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
-	-- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-	-- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
-	-- vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-	-- vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-	-- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-	-- vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
 	require("nvim-ts-autotag").setup()
 	require("ts_context_commentstring").setup({
 		enable_autocmd = false,
 	})
+
 	require("Comment").setup({
 		pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 	})
+
+	--treesitter-based indentation
+	vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 end
 
 require("lz.n").load({
