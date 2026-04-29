@@ -27,16 +27,14 @@ local config = {
 local keymaps = {
 	{
 		mode = { "n" },
-		builder = {
-			passthough = function(p)
-				require("telescope.builtin")[p]()
-			end,
-			descmode = "inherit",
-		},
+		builder = function(p)
+			return { require("telescope.builtin")[p](), { desc = "Telescope: " .. p } }
+		end,
 		keys = {
 			["<leader>"] = {
 				["<leader>"] = "live_grep",
 				f = {
+					layerdesc = "Telescope",
 					f = "find_files",
 					k = "keymaps",
 					o = "oldfiles",

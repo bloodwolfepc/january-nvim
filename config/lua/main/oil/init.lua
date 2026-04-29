@@ -47,7 +47,7 @@ local keymaps = {
 	{
 		mode = { "n" },
 		keys = {
-			["<leader>o"] = "<cmd>Oil<cr>",
+			["<leader>o"] = { "<cmd>Oil<cr>", { desc = "Oil" } },
 		},
 	},
 }

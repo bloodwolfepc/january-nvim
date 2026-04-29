@@ -64,14 +64,13 @@ local config = {
 local keymaps = {
 	{
 		mode = { "n", "v" },
-		builder = {
-			passthough = function(p)
-				require("avante.api")[p]()
-			end,
-		},
+		builder = function(p)
+			return { require("avante.api")[p](), { desc = "Avante: " .. p } }
+		end,
 		keys = {
 			["<leader>"] = {
 				a = {
+					layerdesc = "Avante",
 					a = "ask",
 					e = "edit",
 					t = "toggle",

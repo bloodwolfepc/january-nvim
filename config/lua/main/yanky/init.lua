@@ -7,14 +7,10 @@ local config = {
 local keymaps = {
 	{
 		mode = { "n", "x" },
-		builder = {
-			descmode = "inherit",
-		},
 		keys = {
-			-- yy = function()
-			-- 	vim.api.nvim_commnd("normal! yy")
-			-- end,
-			yy = "<cmd>yank<cr>",
+			yy = function()
+				vim.api.nvim_commnd("normal! yy")
+			end,
 			p = "<Plug>(YankyPutAfter)",
 			P = "<Plug>(YankyPutAfter)",
 			g = {

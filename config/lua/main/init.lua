@@ -2,12 +2,12 @@ require("main.opts")
 
 require("theme").load()
 
-require("main.oil")
-require("main.telescope")
+-- require("main.oil")
+-- require("main.telescope")
 require("main.treesitter")
-require("main.yanky")
-require("main.avante")
-require("main.completion")
+-- require("main.yanky")
+-- require("main.avante")
+-- require("main.completion")
 
 vim.diagnostic.config({
 	virtual_text = true,
@@ -189,10 +189,10 @@ require("lz.n").load({
 		event = "DeferredUIEnter",
 		after = function()
 			require("which-key").setup()
-			require("which-key").add({
-				{ "<leader>f", group = "telescope" },
-				{ "<leader>f_", hidden = true },
-			})
+			-- require("which-key").add({
+			-- 	{ "<leader>f", group = "telescope" },
+			-- 	{ "<leader>f_", hidden = true },
+			-- })
 		end,
 	},
 })
