@@ -65,7 +65,10 @@ local keymaps = {
 	{
 		mode = { "n", "v" },
 		builder = function(p)
-			return { require("avante.api")[p](), { desc = "Avante: " .. p } }
+			require("avante.api")[p]()
+		end,
+		desc = function(p)
+			return "Avante: " .. p
 		end,
 		keys = {
 			["<leader>"] = {

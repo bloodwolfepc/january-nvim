@@ -21,9 +21,6 @@ local keymaps = {
 	},
 	{
 		mode = { "n" },
-		builder = {
-			descmode = "inherit",
-		},
 		keys = {
 			["<c-p>"] = "<Plug>(YankyPreviousEntry)",
 			["<c-n>"] = "<Plug>(YankyNextEntry)",

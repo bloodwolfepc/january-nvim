@@ -1,6 +1,3 @@
---if a tail is a string and nothing gived a disc, the desc will the the tail. if its a function and nothing can give a disc, it will just be :3
---lua annotations
-
 local M = {}
 
 M.addPacks = function(name, plugins)
@@ -27,7 +24,6 @@ local function parseKeymaps(keymaps)
 
 	local function walk(node, ctx)
 		for key, val in pairs(node) do
-			vim.print("PARSING:", val)
 			local keyseq = ctx.keyseq .. key
 
 			--CASE 1: nested keymap table or single override block
@@ -38,92 +34,78 @@ local function parseKeymaps(keymaps)
 						keyseq = keyseq,
 						mode = merge_modes(ctx.mode, val.mode),
 						builder = val.builder or ctx.builder,
+						desc = val.builder or ctx.desc,
 					})
 
 				--layerdesc
-				elseif val == "layerdesc" then
-					vim.keymap.set({ keyseq, keyseq, { desc = val } })
+				elseif val.layerdesc then
+					--vim.keymap.set({ keyseq, keyseq, { desc = val } })
 
-				-- nested keymap table
+					-- nested keymap table
 				else
 					walk(val, {
 						keyseq = keyseq,
 						mode = ctx.mode,
 						builder = ctx.builder,
+						desc = ctx.desc,
 					})
 				end
 
 			-- CASE 2: { command, opts } , group of override blocks, group of override block with layerdisc
 			elseif type(val) == "table" and val[1] then
-				vim.print("CMDOPTS")
+				--layerdesc
+				if val.layerdesc then
+					vim.keymap.set(table.concat(ctx.mode, ", "), keyseq, "", { desc = val.layerdesc })
+				end
+
 				for _, val1 in ipairs(val) do
 					-- group of override blocks
 					if val1.keys then
-						vim.print("HASKEYS")
-						for _, val in pairs(val) do
-							walk(val.keys, {
-								keyseq = keyseq,
-								mode = merge_modes(ctx.mode, val.mode),
-								builder = val.builder or ctx.builder,
-							})
+						walk(val1.keys, {
+							keyseq = keyseq,
+							mode = merge_modes(ctx.mode, val.mode),
+							builder = val.builder or ctx.builder,
+							desc = val.desc or ctx.desc,
+						})
+
+					-- value is { command, { opts } } or { command, command, ... { opts } }
+					else
+						local command = val[1]
+						local usebuilder = true
+						local desc
+						local opts = {}
+
+						--find opts table if it exists
+						for _, val1 in ipairs(val) do
+							if type(val1) == "table" then
+								opts = val1
+							end
 						end
 
-					-- layerdesc
-					elseif val1 == "layerdesc" then
-						vim.keymap.set({ keyseq, keyseq, { desc = val } })
-						vim.print("LAYERDESC")
-					else
-						break
+						-- check if usebuilder is disabled though opts
+						if type(node) == "table" and opts.usebuilder == false then
+							usebuilder = false
+						elseif usebuilder and ctx.builder then
+							command = function()
+								ctx.builder(val)
+							end
+						end
+
+						--check for desc function
+						if type(ctx.desc) == "function" then
+							desc = ctx.desc(val)
+						else
+							desc = desc
+						end
+
+						table.insert(out, {
+							keyseq = keyseq,
+							command = command,
+							desc = opts.desc or desc,
+							mode = ctx.mode,
+						})
 					end
 				end
-
-				-- value is { command, { opts } } or { command, command, ... { opts } }
-				vim.print("RUNS ELSE")
-				local command = val[1]
-				local usebuilder = true
-				local desc
-				local opts = {}
-
-				--find opts table if it exists
-				for _, val1 in ipairs(val) do
-					if type(val1) == "table" then
-						opts = val1
-					else
-						vim.print("STRING:", val1)
-					end
-				end
-
-				-- check if usebuilder is disabled though opts
-				if type(node) == "table" and opts.usebuilder == false then
-					usebuilder = false
-				elseif usebuilder and ctx.builder then
-					vim.print("BUILDER HAS VAL PASSED IN:", val)
-					builder = function()
-						ctx.builder(val)
-					end
-					vim.print("BUILDER HAS VAL PASSED IN FINAL:", val)
-					-- I get attempt to call table here
-
-					local builder1 = builder()
-					vim.print("BUILDER HAS VAL PASSED IN FINALLL:", val)
-
-					-- handle if builder returns a table with opts or a single function
-					if type(builder1) == "function" then
-						vim.print("CMD = BUILDER1:", val)
-						command = builder1[1]
-						--desc = builder[2].desc or desc
-					else
-						vim.print("CMD = BUILDER:", val)
-						command = builder
-					end
-				end
-
-				table.insert(out, {
-					keyseq = keyseq,
-					command = command,
-					desc = opts.desc or desc,
-					mode = ctx.mode,
-				})
 
 			-- CASE 3: single string command or function
 			elseif type(val) == "string" or type(val) == "function" then
@@ -134,28 +116,20 @@ local function parseKeymaps(keymaps)
 
 				if val == "layerdesc" then
 					--vim.keymap.set({ mode, keyseq, { desc = val } })
-					print("LAYERDESC")
 
-				-- check if usebuilder is disabled though opts
+					-- check if usebuilder is disabled though opts
 				elseif type(node) == "table" and opts.usebuilder == false then
 					usebuilder = false
 				elseif usebuilder and ctx.builder then
-					builder = function()
+					command = function()
 						ctx.builder(val)
 					end
 
-					-- handle if builder returns a table with opts or a single function
-					if type(builder) == "table" and builder[1] then
-						command = builder[1]
-						desc = builder[2].desc or desc
+					--check for desc function
+					if type(ctx.desc) == "function" then
+						desc = ctx.desc(val)
 					else
-						command = builder
-					end
-
-					if desc == "" and type(val) == "string" then
-						desc = val
-					else
-						desc = "xxx"
+						desc = desc
 					end
 
 					table.insert(out, {
@@ -174,6 +148,7 @@ local function parseKeymaps(keymaps)
 			keyseq = "",
 			mode = val.mode,
 			builder = val.builder,
+			desc = val.desc,
 		})
 	end
 	return out
@@ -203,7 +178,6 @@ end
 
 M.keymapsForVim = function(keymaps)
 	local flattened_maps = parseKeymaps(keymaps)
-	vim.print(flattened_maps)
 	for _, val in ipairs(flattened_maps) do
 		vim.keymap.set(val.mode, val.keyseq, val.command, { desc = val.desc })
 	end

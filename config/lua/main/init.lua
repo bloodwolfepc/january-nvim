@@ -2,12 +2,12 @@ require("main.opts")
 
 require("theme").load()
 
--- require("main.oil")
--- require("main.telescope")
+require("main.oil")
+require("main.telescope")
 require("main.treesitter")
--- require("main.yanky")
--- require("main.avante")
--- require("main.completion")
+require("main.yanky")
+require("main.avante")
+require("main.completion")
 
 vim.diagnostic.config({
 	virtual_text = true,
