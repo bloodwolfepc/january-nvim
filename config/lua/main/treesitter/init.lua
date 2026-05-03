@@ -34,6 +34,20 @@ local config = {
 	},
 }
 
+local extraConfig = function()
+	require("nvim-ts-autotag").setup()
+	require("ts_context_commentstring").setup({
+		enable_autocmd = false,
+	})
+
+	require("Comment").setup({
+		pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+	})
+
+	--treesitter-based indentation
+	vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+end
+
 local keymaps = {
 
 	--Treesitter selection
@@ -100,8 +114,7 @@ local keymaps = {
 			if type(p[2]) ~= "table" then
 				return "TSTO Move: " .. p[1] .. p[2]
 			else
-				local p2 = p[2]
-				return "TSTO Move: " .. p[1] .. p2[1] .. p2[2]
+				return "TSTO Move: " .. p[1] .. p[2][1] .. p[2][2]
 			end
 		end,
 		keys = {
@@ -140,20 +153,6 @@ local keymaps = {
 		},
 	},
 }
-
-local extraConfig = function()
-	require("nvim-ts-autotag").setup()
-	require("ts_context_commentstring").setup({
-		enable_autocmd = false,
-	})
-
-	require("Comment").setup({
-		pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-	})
-
-	--treesitter-based indentation
-	vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-end
 
 require("lz.n").load({
 	{

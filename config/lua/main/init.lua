@@ -2,16 +2,18 @@ require("main.opts")
 
 require("theme").load()
 
+require("main.alpha")
 require("main.oil")
 require("main.telescope")
 require("main.treesitter")
 require("main.yanky")
 require("main.avante")
 require("main.completion")
+require("main.lsp")
 
 vim.diagnostic.config({
-	virtual_text = true,
-	virtual_lines = false,
+	virtual_text = false,
+	virtual_lines = true,
 })
 
 require("lz.n").load({
