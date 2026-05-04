@@ -1,10 +1,8 @@
 return {
 	{
 		"markdown-preview.nvim",
-		lazy = false,
-		for_cat = "markdown",
 		cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
-		ft = "markdown",
+		ft = { "markdown" },
 		keys = {
 			{ "<leader>ssp", "<cmd>MarkdownPreview <CR>", mode = { "n" }, noremap = true, desc = "markdown preview" },
 			{
@@ -28,9 +26,7 @@ return {
 	},
 	{
 		"render-markdown.nvim",
-		for_cat = "markdown",
-		ft = "markdown",
-		event = "DeferredUIEnter",
+		ft = { "markdown" },
 		after = function()
 			require("render-markdown").setup({
 				file_types = { "markdown", "vimwiki" },
@@ -43,9 +39,7 @@ return {
 	},
 	{
 		"vimwiki",
-		for_cat = "markdown",
-		ft = "markdown",
-		event = "DeferredUIEnter",
+		ft = { "markdown " },
 		after = function()
 			vim.g.vimwiki_auto_chdir = 1
 			vim.g.vimwiki_list = {

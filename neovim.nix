@@ -11,8 +11,9 @@ let
   packageName = "nvim";
 
   runtimeDeps = with pkgs; [
-    lua54Packages.lua-utils-nvim
     stdenv.cc.cc
+    luaPackages.lua-utils-nvim
+    luaPackages.pathlib-nvim
     ripgrep
     fd
     universal-ctags
@@ -73,13 +74,16 @@ let
       which-key-nvim
       tmux-navigator
       tmux-nvim
+      plenary-nvim
+
+      neorg
+      neorg-telescope
+      # neorg-interim-ls
     ]
-    ++ extraDeps;
+    ++ [ initLuaLib ];
 
   optPlugins = with vimPlugins; [
     telescope-nvim
-    neorg
-    neorg-telescope
     #persistence-nvim
     #wilder-nvim
     #coc-vimtex
@@ -185,13 +189,25 @@ let
     nvim-lilypond-suite
   ];
 
-  extraDeps = with vimPlugins; [
-    plenary-nvim
-  ];
-
   foldPlugins = builtins.foldl' (
     acc: next: acc ++ [ next ] ++ (foldPlugins (next.dependencies or [ ]))
   ) [ ];
+
+  #luaLib
+  luaEnv = neovim-unwrapped.lua.withPackages (luaPackages: [
+    luaPackages.lua-utils-nvim
+    luaPackages.pathlib-nvim
+  ]);
+  inherit (neovim-unwrapped.lua.pkgs.luaLib) genLuaPathAbsStr genLuaCPathAbsStr;
+  initLuaLib = (
+    pkgs.runCommandLocal "init-plugin" { } ''
+      mkdir -pv $out/plugin
+      tee $out/plugin/init.lua <<EOF
+      package.path = "${genLuaPathAbsStr luaEnv};" .. package.path
+      package.cpath = "${genLuaCPathAbsStr luaEnv};" .. package.cpath
+      EOF
+    ''
+  );
 
   startPluginsWithDeps = lib.unique (foldPlugins startPlugins);
   optPluginsWithDeps = lib.unique (foldPlugins optPlugins);

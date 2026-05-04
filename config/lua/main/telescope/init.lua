@@ -31,7 +31,7 @@ local keymaps = {
 			require("telescope.builtin")[p]()
 		end,
 		desc = function(p)
-			return "Telescope: " .. p
+			return "TEL: " .. p
 		end,
 		keys = {
 			["<leader>"] = {
@@ -60,6 +60,7 @@ local keymaps = {
 					B = "builtin",
 					e = "symbols",
 					g = {
+						layerdesc = "GIT",
 						c = "git_commits",
 						b = "git_bcommits",
 						v = "git_bcommits_range",

@@ -26,8 +26,13 @@ local function parseKeymaps(keymaps)
 		for key, val in pairs(node) do
 			local keyseq = ctx.keyseq .. key
 
-			--CASE 1: nested keymap table or single override block
+			--CASE 1: nested keymap table, single override block, layerdesc
 			if type(val) == "table" and not val[1] and not val.command then
+				--layerdesc
+				-- if val.layerdesc then
+				-- 	vim.keymap.set(ctx.mode, keyseq, "", { desc = val.layerdesc })
+				-- end
+
 				-- single override block
 				if val.keys then
 					walk(val.keys, {
@@ -37,11 +42,7 @@ local function parseKeymaps(keymaps)
 						desc = val.builder or ctx.desc,
 					})
 
-				--layerdesc
-				elseif val.layerdesc then
-					--vim.keymap.set({ keyseq, keyseq, { desc = val } })
-
-					-- nested keymap table
+				-- nested keymap table
 				else
 					walk(val, {
 						keyseq = keyseq,
@@ -51,21 +52,21 @@ local function parseKeymaps(keymaps)
 					})
 				end
 
-			-- CASE 2: { command, opts } , group of override blocks, group of override block with layerdisc
+			-- CASE 2: { command, opts } , group of override blocks, layerdisc
 			elseif type(val) == "table" and val[1] then
 				--layerdesc
-				if val.layerdesc then
-					vim.keymap.set(table.concat(ctx.mode, ", "), keyseq, "", { desc = val.layerdesc })
-				end
+				-- if val.layerdesc then
+				-- 	vim.keymap.set(ctx.mode, keyseq, "", { desc = val.layerdesc })
+				-- end
 
 				for _, val1 in ipairs(val) do
 					-- group of override blocks
 					if val1.keys then
 						walk(val1.keys, {
 							keyseq = keyseq,
-							mode = merge_modes(ctx.mode, val.mode),
-							builder = val.builder or ctx.builder,
-							desc = val.desc or ctx.desc,
+							mode = merge_modes(ctx.mode, val1.mode),
+							builder = val1.builder or ctx.builder,
+							desc = val1.desc or ctx.desc,
 						})
 
 					-- value is { command, { opts } } or { command, command, ... { opts } }
@@ -76,7 +77,7 @@ local function parseKeymaps(keymaps)
 						local opts = {}
 
 						--find opts table if it exists
-						for _, val1 in ipairs(val) do
+						for key1, val1 in ipairs(val) do
 							if type(val1) == "table" then
 								opts = val1
 							end
@@ -113,25 +114,33 @@ local function parseKeymaps(keymaps)
 				local command = val
 				local desc = ""
 				local opts = {}
+				local layerdesc
 
-				if val == "layerdesc" then
-					--vim.keymap.set({ mode, keyseq, { desc = val } })
+				--layerdesc
+				if key == "layerdesc" and type(val) == "string" then
+					layerdesc = val
+				end
 
-					-- check if usebuilder is disabled though opts
-				elseif type(node) == "table" and opts.usebuilder == false then
+				-- check if usebuilder is disabled though opts
+				if type(node) == "table" and opts.usebuilder == false then
 					usebuilder = false
 				elseif usebuilder and ctx.builder then
 					command = function()
 						ctx.builder(val)
 					end
+				end
 
-					--check for desc function
-					if type(ctx.desc) == "function" then
-						desc = ctx.desc(val)
-					else
-						desc = desc
-					end
+				--check for desc function
+				if type(ctx.desc) == "function" then
+					desc = ctx.desc(val)
+				else
+					desc = desc
+				end
 
+				if type(layerdesc) == "string" then
+					local keyseq1 = string.gsub(keyseq, "layerdesc", "")
+					vim.keymap.set(ctx.mode, keyseq1, "", { desc = layerdesc })
+				elseif type(layerdesc) ~= "string" then
 					table.insert(out, {
 						keyseq = keyseq,
 						command = command,

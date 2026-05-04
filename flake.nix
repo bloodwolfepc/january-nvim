@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     lilypond-midi-input.url = "github:niveK77pur/lilypond-midi-input";
   };
 
@@ -10,6 +11,7 @@
     {
       self,
       nixpkgs,
+      neorg-overlay,
       ...
     }@inputs:
     let
@@ -21,7 +23,14 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+      nixpkgsFor = forAllSystems (
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          nixpkgs.overlays = [ neorg-overlay.overlays.default ];
+        }
+      );
     in
     {
       packages = forAllSystems (
@@ -31,7 +40,9 @@
         in
         rec {
           nvim = pkgs.callPackage ./neovim.nix { };
+          extraPackages = import ./packages { inherit pkgs; };
           default = nvim;
+          neorg = extraPackages.neorg;
         }
       );
     };

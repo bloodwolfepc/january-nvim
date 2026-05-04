@@ -1,20 +1,22 @@
 require("main.opts")
-
 require("theme").load()
 
-require("main.alpha")
-require("main.oil")
-require("main.telescope")
-require("main.treesitter")
-require("main.yanky")
-require("main.avante")
-require("main.completion")
-require("main.lsp")
-
-vim.diagnostic.config({
-	virtual_text = false,
-	virtual_lines = true,
-})
+for _, val in ipairs({
+	"alpha",
+	"oil",
+	"telescope",
+	"treesitter",
+	"yanky",
+	"avante",
+	"completion",
+	"lsp",
+	"format",
+	"neorg",
+	"keymaps",
+	"diagnostics",
+}) do
+	require("main." .. val)
+end
 
 require("lz.n").load({
 	{
@@ -130,27 +132,6 @@ require("lz.n").load({
 		end,
 	},
 
-	{
-		"neorg",
-		cmd = { "Neorg" },
-		ft = { "neorg" },
-		after = function()
-			require("neorg").setup({
-				load = {
-					["core.defaults"] = {},
-					["core.concealer"] = {},
-					["core.dirman"] = {
-						config = {
-							workspaces = {
-								notes = "~/src/notebook2",
-							},
-							default_workspace = "notes",
-						},
-					},
-				},
-			})
-		end,
-	},
 	{
 		"wrapping.nvim",
 		event = "DeferredUIEnter",

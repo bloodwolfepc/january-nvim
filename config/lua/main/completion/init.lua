@@ -20,7 +20,7 @@ local config = {
 			"lsp",
 			"buffer",
 			"snippets",
-			-- "lazydev",
+			"lazydev",
 			"dictionary",
 			"emoji",
 			"word_net_dictionary",
@@ -71,12 +71,11 @@ local config = {
 					end,
 				},
 			},
-
-			-- lazydev = {
-			-- 	name = "LazyDev",
-			-- 	module = "lazydev.integration.blink",
-			-- 	score_offset = 100,
-			-- },
+			lazydev = {
+				name = "LazyDev",
+				module = "lazydev.integrations.blink",
+				score_offset = 100,
+			},
 		},
 	},
 }
@@ -91,24 +90,10 @@ require("lz.n").load({
 				"blink-cmp-words",
 				"blink-cmp-git",
 				"blink-emoji.nvim",
-				"lazydev.nvim",
 			})
 		end,
 		after = function()
-			require("lazydev").setup({
-				library = {
-					{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
-				},
-			})
 			require("blink.cmp").setup(config)
 		end,
 	},
-	-- {
-	--   "lazydev.nvim",
-	-- event = "DeferredUIEnter",
-	--   after = funciton()
-	--     require("lazydev").setup({
-	--     })
-	--   end,
-	-- }
 })
