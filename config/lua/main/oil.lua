@@ -1,5 +1,5 @@
-util = require("main.util")
-config = {
+local util = require("main.util")
+local config = {
 	default_file_explorer = true,
 	win_options = {
 		wrap = false,
@@ -19,15 +19,10 @@ config = {
 local keymaps = {
 	{
 		mode = { "n" },
-		keys = {
-			["<leader>o"] = { "<cmd>Oil<cr>", { desc = "Oil" } },
-		},
-	},
-	{
-		mode = { "n" },
 		builder = function(p)
 			require("oil.actions")[p].callback()
 		end,
+		opts = { buffer = 0 },
 		desc = function(p)
 			return "OIL: " .. p
 		end,
@@ -57,4 +52,24 @@ local keymaps = {
 vim.cmd.packadd("oil.nvim")
 require("oil").setup(config)
 vim.g.loaded_netrwPlugin = 1
-util.keymapsForVim(keymaps)
+
+util.keymapsForVim({
+	{
+		mode = { "n" },
+		keys = {
+			["<leader>o"] = {
+				function()
+					require("oil.actions").open_cwd.callback()
+				end,
+				{ desc = "Oil" },
+			},
+		},
+	},
+})
+
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
+	pattern = { "oil://*" },
+	callback = function()
+		util.keymapsForVim(keymaps)
+	end,
+})

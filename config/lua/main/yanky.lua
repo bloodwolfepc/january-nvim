@@ -8,9 +8,7 @@ local keymaps = {
 	{
 		mode = { "n", "x" },
 		keys = {
-			yy = function()
-				vim.api.nvim_commnd("normal! yy")
-			end,
+			y = "<plug>(YankyYank)",
 			p = "<Plug>(YankyPutAfter)",
 			P = "<Plug>(YankyPutAfter)",
 			g = {

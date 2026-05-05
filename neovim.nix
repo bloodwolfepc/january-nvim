@@ -72,7 +72,7 @@ let
       nvim-treesitter.withAllGrammars
       alpha-nvim
       which-key-nvim
-      tmux-navigator
+      vim-tmux-navigator
       tmux-nvim
       plenary-nvim
 

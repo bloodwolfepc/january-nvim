@@ -1,5 +1,12 @@
 local M = {}
 
+local function merge(dst, src)
+	for k, v in pairs(src) do
+		dst[k] = v
+	end
+	return dst
+end
+
 M.addPacks = function(name, plugins)
 	local result = { name }
 	if plugins then
@@ -28,19 +35,8 @@ local function parseKeymaps(keymaps)
 
 			--CASE 1: nested keymap table, single override block, layerdesc
 			if type(val) == "table" and not val[1] and not val.command then
-				--layerdesc
-				-- if val.layerdesc then
-				-- 	vim.keymap.set(ctx.mode, keyseq, "", { desc = val.layerdesc })
-				-- end
-
-				-- single override block
-				if val.keys then
-					walk(val.keys, {
-						keyseq = keyseq,
-						mode = merge_modes(ctx.mode, val.mode),
-						builder = val.builder or ctx.builder,
-						desc = val.builder or ctx.desc,
-					})
+				if val.keys or val.mode or val.builder then
+					error("Single override blocks are not supported, assert as such { { overridesA }, { overridesB } }")
 
 				-- nested keymap table
 				else
@@ -49,62 +45,67 @@ local function parseKeymaps(keymaps)
 						mode = ctx.mode,
 						builder = ctx.builder,
 						desc = ctx.desc,
+						opts = ctx.opts,
 					})
 				end
 
-			-- CASE 2: { command, opts } , group of override blocks, layerdisc
+			-- CASE 2: { command, { opts } } , group of override blocks, layerdisc
 			elseif type(val) == "table" and val[1] then
-				--layerdesc
-				-- if val.layerdesc then
-				-- 	vim.keymap.set(ctx.mode, keyseq, "", { desc = val.layerdesc })
-				-- end
+				-- { command, { opts } }
+				if type(val[1]) == "function" or type(val[1]) == "string" then
+					local command = val[1]
+					local usebuilder = true
+					local desc
+					local opts = {}
 
-				for _, val1 in ipairs(val) do
-					-- group of override blocks
-					if val1.keys then
-						walk(val1.keys, {
-							keyseq = keyseq,
-							mode = merge_modes(ctx.mode, val1.mode),
-							builder = val1.builder or ctx.builder,
-							desc = val1.desc or ctx.desc,
-						})
+					-- check if usebuilder is disabled though opts
+					if type(node) == "table" and opts.usebuilder == false or type(val[1]) == "function" then
+						usebuilder = false
+					elseif usebuilder and ctx.builder then
+						command = function()
+							ctx.builder(val)
+						end
+					end
 
-					-- value is { command, { opts } } or { command, command, ... { opts } }
+					--check for desc function
+					if type(ctx.desc) == "function" then
+						desc = ctx.desc(val)
 					else
-						local command = val[1]
-						local usebuilder = true
-						local desc
-						local opts = {}
+						desc = desc
+					end
 
-						--find opts table if it exists
-						for key1, val1 in ipairs(val) do
-							if type(val1) == "table" then
-								opts = val1
-							end
+					--find opts table if it exists
+					for _, val1 in ipairs(val) do
+						if type(val1) == "table" then
+							opts = val1
 						end
+					end
 
-						-- check if usebuilder is disabled though opts
-						if type(node) == "table" and opts.usebuilder == false then
-							usebuilder = false
-						elseif usebuilder and ctx.builder then
-							command = function()
-								ctx.builder(val)
-							end
+					if opts.desc then
+						desc = opts.desc
+					end
+
+					table.insert(out, {
+						keyseq = keyseq,
+						command = command,
+						desc = opts.desc or desc,
+						mode = ctx.mode,
+						opts = ctx.opts,
+					})
+
+				-- group of override blocks
+				else
+					for _, val1 in ipairs(val) do
+						-- group of override blocks
+						if val1.keys then
+							walk(val1.keys, {
+								keyseq = keyseq,
+								mode = merge_modes(ctx.mode, val1.mode),
+								builder = val1.builder or ctx.builder,
+								desc = val1.desc or ctx.desc,
+								opts = val1.opts or ctx.opts,
+							})
 						end
-
-						--check for desc function
-						if type(ctx.desc) == "function" then
-							desc = ctx.desc(val)
-						else
-							desc = desc
-						end
-
-						table.insert(out, {
-							keyseq = keyseq,
-							command = command,
-							desc = opts.desc or desc,
-							mode = ctx.mode,
-						})
 					end
 				end
 
@@ -146,6 +147,7 @@ local function parseKeymaps(keymaps)
 						command = command,
 						desc = desc,
 						mode = ctx.mode,
+						opts = ctx.opts or opts,
 					})
 				end
 			end
@@ -158,6 +160,7 @@ local function parseKeymaps(keymaps)
 			mode = val.mode,
 			builder = val.builder,
 			desc = val.desc,
+			opts = val.opts,
 		})
 	end
 	return out
@@ -188,7 +191,13 @@ end
 M.keymapsForVim = function(keymaps)
 	local flattened_maps = parseKeymaps(keymaps)
 	for _, val in ipairs(flattened_maps) do
-		vim.keymap.set(val.mode, val.keyseq, val.command, { desc = val.desc })
+		local opts = {}
+		if val.opts ~= nil then
+			opts = merge(merge(opts, { desc = val.desc }), val.opts)
+		else
+			opts = { desc = val.desc }
+		end
+		vim.keymap.set(val.mode, val.keyseq, val.command, opts)
 	end
 end
 
