@@ -175,21 +175,29 @@ local keymaps = {
 	},
 }
 util.keymapsForVim(global_keymaps)
-require("lz.n").load({
-	{
-		"neorg",
-		-- cmd = { "Neorg" },
-		-- ft = { "neorg", "norg" },
-		event = "DeferredUIEnter",
+-- require("lz.n").load({
+-- 	{
+-- 		"neorg",
+-- 		-- cmd = { "Neorg" },
+-- 		-- ft = { "neorg", "norg" },
+-- 		event = "DeferredUIEnter",
+--
+-- 		after = function()
+-- 			require("neorg").setup(config)
+-- 			vim.api.nvim_create_autocmd("FileType", {
+-- 				pattern = "norg",
+-- 				callback = function()
+-- 					util.keymapsForVim(keymaps)
+-- 				end,
+-- 			})
+-- 		end,
+-- 	},
+-- })
 
-		after = function()
-			require("neorg").setup(config)
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "norg",
-				callback = function()
-					util.keymapsForVim(keymaps)
-				end,
-			})
-		end,
-	},
+require("neorg").setup(config)
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "norg",
+	callback = function()
+		util.keymapsForVim(keymaps)
+	end,
 })
