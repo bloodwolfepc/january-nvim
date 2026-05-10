@@ -7,7 +7,7 @@ local config = {
 		["core.dirman"] = {
 			config = {
 				workspaces = {
-					notebook = "~/src/notebook2",
+					notebook = "~/notebook",
 				},
 				default_workspace = "notebook",
 			},
