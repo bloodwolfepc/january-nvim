@@ -121,7 +121,7 @@ local keymaps = {
 			["]m"] = { "goto_next_start", "@function.outer", "textobjects" },
 			["]]"] = { "goto_next_start", "@class.outer", "textobjects" },
 			["]o"] = { "goto_next_start", { "@loop.inner", "@loop.outer" }, "textobjects" },
-			["]s"] = { "goto_next_start", "@local.scope", "local" },
+			["]c"] = { "goto_next_start", "@local.scope", "local" },
 			["]z"] = { "goto_next_start", "@fold", "folds" },
 
 			["]M"] = { "goto_next_end", "@function.outer", "textobjects" },

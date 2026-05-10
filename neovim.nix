@@ -31,6 +31,7 @@ let
     rustc
     rust-analyzer
     rustfmt
+    harper
     clang-tools
     bash-language-server
     pyright

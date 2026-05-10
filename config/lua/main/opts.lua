@@ -5,7 +5,7 @@ local fn = vim.fn
 
 local globals = {
 	mapleader = " ",
-	maplocalleader = "<leader>l",
+	--maplocalleader = " ",
 	netrw_banner = 0,
 	netrw_mouse = 2,
 	editorconfig = true,

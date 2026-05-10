@@ -30,6 +30,16 @@ function M.get(c, opts)
 		BlinkCmpSignatureHelpBorder = { fg = c.border_highlight, bg = c.bg_float },
 		BlinkCmpScrollBarThumb = { fg = c.fg, bg = c.none },
 		BlinkCmpScrollBarGutter = { fg = c.none, bg = c.none },
+
+		-- SpellBad = { fg = c.none, bg = c.none, sp = c.none, undercurl = true },
+		-- SpellCap = { fg = c.none, bg = c.none, sp = c.none, undercurl = true },
+		-- SpellRare = { fg = c.purple, bg = c.none, sp = c.purple, undercurl = true },
+		-- SpellLocal = { fg = c.purple, bg = c.none, sp = c.purple, undercurl = true },
+
+		WhichKeyFloat = { fg = c.g6, bg = c.none },
+		WhichKey = { fg = c.g6, bg = c.none },
+		WhichKeyBorder = { fg = c.g4, bg = c.none },
+		WhichKeyNormal = { fg = c.g4, bg = c.none },
 	}
 end
 
