@@ -187,7 +187,6 @@ end
 
 M.keymapsForVim = function(keymaps)
 	local flattened_maps = parseKeymaps(keymaps)
-	vim.print(flattened_maps)
 	for _, val in ipairs(flattened_maps) do
 		local opts = {}
 		if val.opts ~= nil then
