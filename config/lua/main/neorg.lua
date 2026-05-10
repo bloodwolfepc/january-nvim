@@ -109,7 +109,7 @@ local keymaps = {
 			return "NORG: " .. p
 		end,
 		keys = {
-			["<localleader>"] = {
+			[""] = {
 				{
 					mode = { "i" },
 					keys = {
@@ -124,7 +124,7 @@ local keymaps = {
 					keys = {
 						["<,"] = "promo.demote",
 						["<<"] = "promo.demote.nested",
-						["."] = "promo.promote",
+						[">."] = "promo.promote",
 						[">>"] = "promo.promote.nested",
 						["<cr>"] = "esupports.hop.hop-link",
 						["<m-cr>"] = "esupports.hop.hop-link.vsplit",
