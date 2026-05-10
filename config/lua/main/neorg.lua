@@ -19,7 +19,7 @@ local config = {
 		},
 		["core.concealer"] = {
 			config = {
-				icon_preset = "diamond",
+				--icon_preset = "diamond",
 			},
 		},
 		["external.interim-ls"] = {
@@ -102,7 +102,7 @@ local global_keymaps = {
 local keymaps = {
 	{
 		builder = function(p)
-			return "<Plug>neorg." .. p .. ")"
+			return vim.cmd(':execute "normal \\<Plug>(neorg.' .. p .. ')"')
 		end,
 		opts = { buffer = true },
 		desc = function(p)
