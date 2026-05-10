@@ -20,7 +20,7 @@ local keymaps = {
 	{
 		mode = { "n" },
 		builder = function(p)
-			require("oil.actions")[p].callback()
+			return require("oil.actions")[p].callback()
 		end,
 		opts = { buffer = 0 },
 		desc = function(p)
@@ -59,7 +59,7 @@ util.keymapsForVim({
 		keys = {
 			["<leader>o"] = {
 				function()
-					require("oil.actions").open_cwd.callback()
+					vim.cmd("Oil")
 				end,
 				{ desc = "Oil" },
 			},

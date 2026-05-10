@@ -5,7 +5,7 @@ local fn = vim.fn
 
 local globals = {
 	mapleader = " ",
-	--maplocalleader =   \
+	maplocalleader = "<leader>l",
 	netrw_banner = 0,
 	netrw_mouse = 2,
 	editorconfig = true,
@@ -50,6 +50,7 @@ local options = {
 	signcolumn = "number",
 	wrap = false,
 	scrolloff = 999,
+	--scrolloffpad = 1,
 	sidescrolloff = 64,
 	title = true,
 	colorcolumn = "100",

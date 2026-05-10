@@ -7,4 +7,5 @@ rec {
   feed-nvim = pkgs.callPackage ./feed-nvim.nix { };
   coop-nvim = pkgs.callPackage ./coop-nvim.nix { };
   midi-input-nvim = pkgs.callPackage ./midi-input-nvim.nix { };
+  norg-fmt = pkgs.callPackage ./norg-fmt.nix { };
 }

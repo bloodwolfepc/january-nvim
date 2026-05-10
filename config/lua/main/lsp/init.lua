@@ -20,6 +20,7 @@ require("lz.n").load({
 			vim.lsp.enable("clangd")
 			vim.lsp.enable("pyright")
 			vim.lsp.enable("scheme_langserver")
+			vim.lsp.enable("phpactor")
 		end,
 	},
 })

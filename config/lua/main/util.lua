@@ -111,7 +111,6 @@ local function parseKeymaps(keymaps)
 
 			-- CASE 3: single string command or function
 			elseif type(val) == "string" or type(val) == "function" then
-				local usebuilder = true
 				local command = val
 				local desc = ""
 				local opts = {}
@@ -123,9 +122,7 @@ local function parseKeymaps(keymaps)
 				end
 
 				-- check if usebuilder is disabled though opts
-				if type(node) == "table" and opts.usebuilder == false then
-					usebuilder = false
-				elseif usebuilder and ctx.builder then
+				if ctx.builder and type(ctx.builder) == "function" then
 					command = function()
 						ctx.builder(val)
 					end
@@ -190,6 +187,7 @@ end
 
 M.keymapsForVim = function(keymaps)
 	local flattened_maps = parseKeymaps(keymaps)
+
 	for _, val in ipairs(flattened_maps) do
 		local opts = {}
 		if val.opts ~= nil then

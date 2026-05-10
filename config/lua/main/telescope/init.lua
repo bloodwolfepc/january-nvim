@@ -115,7 +115,8 @@ end
 require("lz.n").load({
 	{
 		"telescope.nvim",
-		cmd = "Telescope",
+		--cmd = "Telescope",
+		event = "DeferredUIEnter",
 		keys = util.keymapsForLzn(keymaps),
 		load = function(name)
 			util.addPacks(name, {

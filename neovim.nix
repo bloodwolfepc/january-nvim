@@ -35,6 +35,8 @@ let
     bash-language-server
     pyright
     gopls
+    phpactor
+    # phpPackages.psalm
     yaml-language-server
     vscode-langservers-extracted
     tailwindcss-language-server
@@ -78,7 +80,8 @@ let
 
       neorg
       neorg-telescope
-      # neorg-interim-ls
+      neorg-interim-ls
+      image-nvim
     ]
     ++ [ initLuaLib ];
 
