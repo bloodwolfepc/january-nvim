@@ -1,10 +1,14 @@
-local indent_value = 2
 local util = require("main.util")
 local config = {
 	load = {
-		["core.defaults"] = {},
-		--["core.integrations.image"] = {},
-		["core.latex.renderer"] = {},
+		["core.defaults"] = {
+			config = {
+				disable = {
+					"core.promo",
+					"core.esupports.indent",
+				},
+			},
+		},
 		["core.dirman"] = {
 			config = {
 				workspaces = {
@@ -20,7 +24,12 @@ local config = {
 		},
 		["core.concealer"] = {
 			config = {
-				--icon_preset = "diamond",
+				icons = {
+					heading = false,
+					list = false,
+					ordered = false,
+					quote = false,
+				},
 			},
 		},
 		["external.interim-ls"] = {
@@ -42,28 +51,10 @@ local config = {
 				},
 			},
 		},
-		["core.esupports.indent"] = {
-			indents = {
-				_ = { indent = indent_value },
-				heading1 = { indent = 0 * indent_value },
-				heading2 = { indent = 1 * indent_value },
-				heading3 = { indent = 2 * indent_value },
-				heading4 = { indent = 3 * indent_value },
-				heading5 = { indent = 4 * indent_value },
-				heading6 = { indent = 5 * indent_value },
-				paragraph_segment = { indent = indent_value },
-				ranged_tag = { indent = indent_value },
-				ranged_tag_content = { indent = indent_value },
-				strong_paragraph_delimiter = { indent = indent_value },
-			},
-			tweaks = {
-				heading2 = 1,
-				heading3 = 2,
-				heading4 = 3,
-				heading5 = 4,
-				heading6 = 5,
-			},
-		},
+		--["core.integrations.image"] = {},
+		-- ["core.presenter"] = {},
+		["core.latex.renderer"] = {},
+		["core.export.markdown"] = {},
 	},
 }
 
@@ -136,19 +127,19 @@ local keymaps = {
 				{
 					mode = { "i" },
 					keys = {
-						["<c-d>"] = "promo.demote",
-						["<c-t>"] = "promo.promote",
-						["<c-cr"] = "promo.next-interation",
+						-- ["<c-d>"] = "promo.demote",
+						-- ["<c-t>"] = "promo.promote",
+						-- ["<c-cr"] = "promo.next-interation",
 						["<m-d>"] = "promo.tempus.insert-date.insert-mode",
 					},
 				},
 				{
 					mode = { "n" },
 					keys = {
-						["<,"] = "promo.demote",
-						["<<"] = "promo.demote.nested",
-						[">."] = "promo.promote",
-						[">>"] = "promo.promote.nested",
+						-- ["<,"] = "promo.demote",
+						-- ["<<"] = "promo.demote.nested",
+						-- [">."] = "promo.promote",
+						-- [">>"] = "promo.promote.nested",
 						["<cr>"] = "esupports.hop.hop-link",
 						["<m-cr>"] = "esupports.hop.hop-link.vsplit",
 						["<m-t>"] = "esupports.hop.hop-link.tab-drop",
@@ -224,5 +215,3 @@ require("lz.n").load({
 -- 		util.keymapsForVim(keymaps)
 -- 	end,
 -- })
---"   autoindent file in Neorg
--- nnoremap <silent> <localleader>i :normal! gg <CR> :%normal! i<Esc><C-o>
