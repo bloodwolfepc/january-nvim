@@ -83,6 +83,8 @@ let
       neorg-telescope
       neorg-interim-ls
       image-nvim
+
+      text-case-nvim
     ]
     ++ [ initLuaLib ];
 

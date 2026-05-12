@@ -14,6 +14,7 @@ for _, val in ipairs({
 	"neorg",
 	"keymaps",
 	"diagnostics",
+	"case",
 }) do
 	require("main." .. val)
 end

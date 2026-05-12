@@ -1,3 +1,4 @@
+local indent_value = 2
 local util = require("main.util")
 local config = {
 	load = {
@@ -39,6 +40,28 @@ local config = {
 				insert_file_link = {
 					show_title_preview = true,
 				},
+			},
+		},
+		["core.esupports.indent"] = {
+			indents = {
+				_ = { indent = indent_value },
+				heading1 = { indent = 0 * indent_value },
+				heading2 = { indent = 1 * indent_value },
+				heading3 = { indent = 2 * indent_value },
+				heading4 = { indent = 3 * indent_value },
+				heading5 = { indent = 4 * indent_value },
+				heading6 = { indent = 5 * indent_value },
+				paragraph_segment = { indent = indent_value },
+				ranged_tag = { indent = indent_value },
+				ranged_tag_content = { indent = indent_value },
+				strong_paragraph_delimiter = { indent = indent_value },
+			},
+			tweaks = {
+				heading2 = 1,
+				heading3 = 2,
+				heading4 = 3,
+				heading5 = 4,
+				heading6 = 5,
 			},
 		},
 	},
@@ -201,3 +224,5 @@ require("lz.n").load({
 -- 		util.keymapsForVim(keymaps)
 -- 	end,
 -- })
+--"   autoindent file in Neorg
+-- nnoremap <silent> <localleader>i :normal! gg <CR> :%normal! i<Esc><C-o>
