@@ -1,7 +1,9 @@
 local util = require("main.util")
 local config = {
 	provider = "openai",
-	hints = { enabled = false },
+	hints = {
+		enabled = false,
+	},
 	windows = {
 		ask = { border = "single" },
 		edit = { border = "single" },
