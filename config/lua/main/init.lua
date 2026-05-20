@@ -19,6 +19,9 @@ for _, val in ipairs({
 	require("main." .. val)
 end
 
+require("main.ft.markdown")
+require("main.ft.latex")
+
 require("lz.n").load({
 	{
 		"nvim-web-devicons",

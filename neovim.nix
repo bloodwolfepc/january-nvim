@@ -14,6 +14,7 @@ let
     stdenv.cc.cc
     luaPackages.lua-utils-nvim
     luaPackages.pathlib-nvim
+    # luaPackages.magick broken
     ripgrep
     fd
     universal-ctags
@@ -60,6 +61,7 @@ let
     soundfont-fluid
     soundfont-ydp-grand
     git
+    imagemagick
     (pkgs.aspellWithDicts (
       ds: with ds; [
         en

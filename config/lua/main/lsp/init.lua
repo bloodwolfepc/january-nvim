@@ -57,6 +57,8 @@ require("lz.n").load({
 			vim.lsp.enable("pyright")
 			vim.lsp.enable("scheme_langserver")
 			vim.lsp.enable("phpactor")
+			vim.lsp.enable("texlab")
+
 			--vim.lsp.enable("harper_ls")
 
 			vim.api.nvim_create_autocmd("FileType", {

@@ -3,7 +3,7 @@ local keymaps = {
 	{
 		mode = { "n" },
 		builder = function(p)
-			return "<Plug>(vimtex-" .. p .. ")"
+			return vim.cmd(':execute "normal \\<Plug>(vimtex-' .. p .. ')"')
 		end,
 		desc = function(p)
 			return "VIMTEX: " .. p
@@ -37,21 +37,17 @@ local keymaps = {
 require("lz.n").load({
 	{
 		"vimtex",
-		ft = { "tex", "bib" },
+		-- ft = { "tex", "bib" },
+		event = "DeferredUIEnter",
 		after = function()
 			vim.g.vimtex_view_method = "zathura"
 			vim.g.vimtex_compiler_method = "latexmk"
 			--vim.g.vimtex_mappings_enabled = false
-			util.keymapsForVim(keymaps)
-		end,
-	},
-
-	{
-		"texlab",
-		ft = { "tex", "bib" },
-		after = function()
-			require("texlab").setup({
-				filetypes = { "tex", "bib" },
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "tex",
+				callback = function()
+					util.keymapsForVim(keymaps) -- TOOD: If buffer in not focused, ummap
+				end,
 			})
 		end,
 	},

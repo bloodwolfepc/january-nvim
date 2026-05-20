@@ -9,6 +9,11 @@ local config = {
 				},
 			},
 		},
+		["core.latex.renderer"] = {
+			-- render_on_enter = true,
+			debounce_ms = 500,
+			dpi = 200,
+		},
 		["core.dirman"] = {
 			config = {
 				workspaces = {
@@ -51,9 +56,8 @@ local config = {
 				},
 			},
 		},
-		--["core.integrations.image"] = {},
+		["core.integrations.image"] = {},
 		-- ["core.presenter"] = {},
-		["core.latex.renderer"] = {},
 		["core.export.markdown"] = {},
 	},
 }
@@ -202,7 +206,25 @@ require("lz.n").load({
 				pattern = "norg",
 				callback = function()
 					util.keymapsForVim(keymaps)
+					-- vim.cmd("Neorg render-latex")
 				end,
+			})
+			require("image").setup({
+				backend = "ueberzug",
+				processor = "magick_cli",
+				integrations = {
+					markdown = {
+						enabled = true,
+					},
+					neorg = {
+						enabled = true,
+						filetypes = { "norg" },
+						-- only_render_image_at_cursor = true,
+						-- only_render_image_at_cursor_mode = "popup",
+						-- floating_windows = true,
+						-- clear_in_insert_mode = true,
+					},
+				},
 			})
 		end,
 	},
