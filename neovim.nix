@@ -48,9 +48,15 @@ let
     scheme-manpages
     akkuPackages.akku
     akkuPackages.scheme-langserver
+
     texlab
     texliveFull
     texlivePackages.latexmk
+
+    typst
+    typst-live
+    typstyle
+
     zathura
     lilypond
     python312Packages.python-ly
@@ -87,6 +93,8 @@ let
       image-nvim
 
       text-case-nvim
+
+      typst-preview-nvim
     ]
     ++ [ initLuaLib ];
 

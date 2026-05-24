@@ -21,6 +21,7 @@ end
 
 require("main.ft.markdown")
 require("main.ft.latex")
+require("main.ft.typst")
 
 require("lz.n").load({
 	{
