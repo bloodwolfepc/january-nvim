@@ -54,6 +54,7 @@ let
     texlivePackages.latexmk
 
     typst
+    tinymist
     typst-live
     typstyle
 

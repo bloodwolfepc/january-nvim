@@ -12,6 +12,15 @@ require("lz.n").load({
 		end,
 		after = function()
 			require("lazydev").setup()
+			vim.lsp.config("tinymist", {
+				filetypes = { "typst" },
+				settings = {
+					formatterMode = "typstyle",
+					formatterIndentSize = 2,
+					-- exportPdf = "onType",
+					semanticTokens = "disable",
+				},
+			})
 
 			vim.lsp.config("harper_ls", {
 				settings = {
@@ -48,6 +57,7 @@ require("lz.n").load({
 				},
 			})
 
+			vim.lsp.enable("tinymist")
 			vim.lsp.enable("lua_ls")
 			vim.lsp.enable("nixd")
 			vim.lsp.enable("bashls")
@@ -58,7 +68,6 @@ require("lz.n").load({
 			vim.lsp.enable("scheme_langserver")
 			vim.lsp.enable("phpactor")
 			vim.lsp.enable("texlab")
-			vim.lsp.enable("tinymist")
 
 			--vim.lsp.enable("harper_ls")
 
