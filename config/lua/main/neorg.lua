@@ -224,6 +224,9 @@ require("lz.n").load({
 						-- floating_windows = true,
 						-- clear_in_insert_mode = true,
 					},
+					typst = {
+						enabled = false,
+					},
 				},
 			})
 		end,
