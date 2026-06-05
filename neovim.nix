@@ -96,6 +96,7 @@ let
       text-case-nvim
 
       typst-preview-nvim
+      vim-table-mode
     ]
     ++ [ initLuaLib ];
 

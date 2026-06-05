@@ -72,7 +72,7 @@ require("lz.n").load({
 			--vim.lsp.enable("harper_ls")
 
 			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "markdown", "text", "gitcommit", "norg" },
+				pattern = { "markdown", "text", "gitcommit", "norg", "typst" },
 				callback = function()
 					vim.opt_local.spell = true
 					vim.opt_local.spelllang = "en_us"

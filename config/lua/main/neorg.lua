@@ -150,7 +150,7 @@ local keymaps = {
 						["<c-space>"] = "qol.todo-items.todo.task-cycle",
 						["<localleader>c"] = {
 							layerdesc = "CODE",
-							m = "looking-glass.magnify",
+							m = "looking-glass.magnify-code-block",
 						},
 						["<localleader>i"] = {
 							layerdesc = "INS",
