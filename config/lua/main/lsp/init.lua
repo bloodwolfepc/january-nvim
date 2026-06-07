@@ -76,6 +76,8 @@ require("lz.n").load({
 				callback = function()
 					vim.opt_local.spell = true
 					vim.opt_local.spelllang = "en_us"
+					vim.opt_local.textwidth = 80
+					vim.opt_local.formatoptions:append("t")
 					-- vim.opt_local.spelloptions = { "camel" }
 					-- vim.opt_local.spellsugges = "best,9"
 					-- vim.opt_local.spellcapcheck =

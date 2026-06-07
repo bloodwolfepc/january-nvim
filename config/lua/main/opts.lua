@@ -54,10 +54,12 @@ local options = {
 	sidescrolloff = 64,
 	title = true,
 	colorcolumn = "100",
+	-- textwidth= "100",
 	virtualedit = "block",
 	inccommand = "split",
 }
 opt.shortmess:append("c")
+-- opt.formatoptions:append("t")
 
 cmd([[
   set iskeyword+=-

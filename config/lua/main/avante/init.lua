@@ -1,8 +1,26 @@
 local util = require("main.util")
 local config = {
+	instructions_file = ".avante.md",
 	provider = "openai",
-	hints = {
-		enabled = false,
+	providers = {
+		openai = {
+			model = "gpt-4o",
+		},
+		-- openai_latest = {
+		-- 	model = "gpt-5.4",
+		-- 	disable_tools = true,
+		-- 	extra_request_body = {
+		-- 		-- temperature = 1,
+		-- 		max_completion_tokens = 4093,
+		-- 	},
+		-- },
+	},
+	selection = {
+		enabled = true,
+		hint_display = "none",
+	},
+	input = {
+		provider = "snacks",
 	},
 	windows = {
 		ask = { border = "single" },
