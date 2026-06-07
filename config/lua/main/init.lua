@@ -183,4 +183,12 @@ require("lz.n").load({
 			-- })
 		end,
 	},
+	{
+		"img-clip.nvim",
+		event = "DeferredUIEnter",
+		after = function()
+			require("img-clip").setup()
+			vim.keymap.set("n", "<leader>p", "<cmd>PasteImage<cr>", { desc = "img paste" })
+		end,
+	},
 })

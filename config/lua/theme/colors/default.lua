@@ -6,6 +6,8 @@ local ret = {
 	g5 = "#6700c3",
 	g6 = "#5757ea",
 
+	comment = "#008080",
+
 	fg = "#c0caf5",
 	bg_float = "#1e2030",
 

@@ -97,6 +97,7 @@ let
 
       typst-preview-nvim
       vim-table-mode
+      snacks-nvim
     ]
     ++ [ initLuaLib ];
 
@@ -195,6 +196,7 @@ let
     gitsigns-nvim
     ChatGPT-nvim
     avante-nvim
+    img-clip-nvim
     codecompanion-nvim
     vimwiki
     markdown-preview-nvim

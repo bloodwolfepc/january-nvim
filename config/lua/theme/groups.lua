@@ -2,6 +2,14 @@ local M = {}
 
 function M.get(c, opts)
 	return {
+		Comment = { fg = c.comment },
+		Pmenu = { fg = c.fg, bg = c.none },
+		PmenuMatch = { fg = c.fg, bg = c.none },
+		PmenuSel = { fg = c.fg, bg = c.none },
+		PmenuMatchSel = { fg = c.fg, bg = c.none },
+		PmenuSbar = { fg = c.fg, bg = c.none },
+		PmenuThumb = { fg = c.fg, bg = c.none },
+
 		ibl1 = { fg = c.g1, nocombine = true },
 		ibl2 = { fg = c.g2, nocombine = true },
 		ibl3 = { fg = c.g3, nocombine = true },
@@ -40,6 +48,15 @@ function M.get(c, opts)
 		WhichKey = { fg = c.g6, bg = c.none },
 		WhichKeyBorder = { fg = c.g4, bg = c.none },
 		WhichKeyNormal = { fg = c.g4, bg = c.none },
+
+		AvanteTitle = { fg = c.fg, bg = c.none },
+		AvanteReversedTitle = { fg = c.fg, bg = c.none },
+		AvanteSubtitle = { fg = c.fg, bg = c.none },
+		AvanteReversedSubtitle = { fg = c.fg, bg = c.none },
+		AvanteThirdTitle = { fg = c.fg, bg = c.none },
+		AvanteReversedThirdTitle = { fg = c.fg, bg = c.none },
+		AvantePromptInput = { fg = c.fg, bg = c.none },
+		AvantePromptInputBorder = { fg = c.fg, bg = c.none },
 	}
 end
 
