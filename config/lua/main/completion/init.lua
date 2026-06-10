@@ -14,11 +14,18 @@ local config = {
 	fuzzy = {
 		implementation = "prefer_rust_with_warning",
 	},
+	cmdline = {
+		sources = {
+			"path",
+			"cmdline",
+		},
+	},
 	sources = {
 		default = {
 			"path",
 			"lsp",
 			"buffer",
+			"avante",
 			"snippets",
 			"lazydev",
 			"dictionary",
@@ -26,7 +33,18 @@ local config = {
 			"word_net_dictionary",
 			"word_net_thesaurus",
 		},
+		per_filetype = {
+			codecompanion = {
+				"codecompanion",
+				"path",
+				"word_net_dictionary",
+			},
+		},
 		providers = {
+			avante = {
+				module = "blink-cmp-avante",
+				name = "Avante",
+			},
 			dictionary = {
 				module = "blink-cmp-dictionary",
 				name = "Dict",
@@ -90,6 +108,7 @@ require("lz.n").load({
 				"blink-cmp-words",
 				"blink-cmp-git",
 				"blink-emoji.nvim",
+				"blink-cmp-avante",
 			})
 		end,
 		after = function()

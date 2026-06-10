@@ -198,6 +198,8 @@ let
     avante-nvim
     img-clip-nvim
     codecompanion-nvim
+    codecompanion-history-nvim
+    codecompanion-spinner-nvim
     vimwiki
     markdown-preview-nvim
     #treesitter
@@ -244,6 +246,7 @@ let
     ) optPluginsWithDeps}
 
     ln -vsfT ${./config} $out/pack/${packageName}/start/config
+
   '';
 in
 

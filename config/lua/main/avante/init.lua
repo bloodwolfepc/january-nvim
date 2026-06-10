@@ -6,14 +6,18 @@ local config = {
 		openai = {
 			model = "gpt-4o",
 		},
-		-- openai_latest = {
-		-- 	model = "gpt-5.4",
-		-- 	disable_tools = true,
-		-- 	extra_request_body = {
-		-- 		-- temperature = 1,
-		-- 		max_completion_tokens = 4093,
-		-- 	},
-		-- },
+		["gpt-5.4"] = {
+			__inherited_from = "openai",
+			model = "gpt-5.4",
+			disable_tools = true,
+			extra_request_body = {
+				-- temperature = 1,
+				max_completion_tokens = 4093,
+			},
+		},
+	},
+	web_search_engine = {
+		provider = "kagi",
 	},
 	selection = {
 		enabled = true,
@@ -124,13 +128,24 @@ require("lz.n").load({
 		end,
 		after = function()
 			require("avante").setup(config)
+
+			-- vim.api.nvim_create_autocmd("User", {
+			-- 	pattern = "ToggleMyPrompt",
+			-- 	callback = function()
+			-- 		require("avante.config").override({ system_prompt = "MY CUSTOM SYSTEM PROMPT" })
+			-- 	end,
+			-- })
+			--
+			-- vim.keymap.set("n", "<leader>am", function()
+			-- 	vim.api.nvim_exec_autocmds("User", { pattern = "ToggleMyPrompt" })
+			-- end, { desc = "avante: toggle my prompt" })
 		end,
 	},
 })
 
 --[[
 TODO:prompt snippet
-  from what is provided in this code snippet:
+  from what is provided in this snippet:
     <here> <- inserted from visual mode
   what does this mean:
     <cursor insert>

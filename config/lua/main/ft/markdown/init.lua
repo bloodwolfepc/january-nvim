@@ -29,10 +29,10 @@ require("lz.n").load({
 	},
 	{
 		"render-markdown.nvim",
-		ft = { "markdown", "Avante" },
+		ft = { "markdown", "Avante", "codecompanion" },
 		after = function()
 			require("render-markdown").setup({
-				file_types = { "markdown", "Avante" },
+				file_types = { "markdown", "Avante", "codecompanion" },
 				latex = {
 					enabled = true,
 				},

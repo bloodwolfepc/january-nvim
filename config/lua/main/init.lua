@@ -7,7 +7,8 @@ for _, val in ipairs({
 	"telescope",
 	"treesitter",
 	"yanky",
-	"avante",
+	-- "avante",
+	"codecompanion",
 	"completion",
 	"lsp",
 	"format",
@@ -177,17 +178,26 @@ require("lz.n").load({
 		event = "DeferredUIEnter",
 		after = function()
 			require("which-key").setup()
-			-- require("which-key").add({
-			-- 	{ "<leader>f", group = "telescope" },
-			-- 	{ "<leader>f_", hidden = true },
-			-- })
+			require("which-key").add({
+				{ "<localleader>", group = "local", hidden = false },
+				{ "<leader>f", group = "telescope" },
+				{ "<leader>f_", hidden = true },
+			})
 		end,
 	},
+
 	{
 		"img-clip.nvim",
 		event = "DeferredUIEnter",
 		after = function()
-			require("img-clip").setup()
+			require("img-clip").setup({
+				embed_image_as_base64 = false,
+				prompt_for_file_name = false,
+				drag_and_drop = {
+					insert_mode = true,
+				},
+				use_absolute_path = true,
+			})
 			vim.keymap.set("n", "<leader>p", "<cmd>PasteImage<cr>", { desc = "img paste" })
 		end,
 	},

@@ -198,4 +198,22 @@ M.keymapsForVim = function(keymaps)
 	end
 end
 
+M.get_distro = function()
+	local f = io.open("/etc/os-release", "r")
+	if not f then
+		return nil
+	end
+
+	for line in f:lines() do
+		local k, v = line:match('^(%w+)="?([^"]+)"?$')
+		if k == "ID" then
+			f:close()
+			return v
+		end
+	end
+
+	f:close()
+	return nil
+end
+
 return M
