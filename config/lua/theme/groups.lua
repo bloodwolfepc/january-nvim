@@ -3,10 +3,7 @@ local M = {}
 function M.get(c, opts)
 	return {
 		Comment = { fg = c.comment },
-    ColorColumn = { c.
-
-
-
+		-- ColorColumn = { c.
 
 		Pmenu = { fg = c.fg, bg = c.none },
 		PmenuMatch = { fg = c.fg, bg = c.none },
