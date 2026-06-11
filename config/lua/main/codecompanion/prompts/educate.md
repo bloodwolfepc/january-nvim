@@ -40,5 +40,3 @@ Tone:
 Your goal is not just to give answers, but to help the learner *learn how to think* about the subject.
 Assume the learner is capable of formal reasoning and mathematical or logical abstraction.
 
-${util.context}
-

@@ -25,7 +25,6 @@ The user is working on a %s machine. Please respond with system specific command
 	nvim_version,
 	system
 )
-
 return {
 	context = "\n\n" .. "Additional context:" .. "\n\n" .. context,
 	system = system,

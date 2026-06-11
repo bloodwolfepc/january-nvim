@@ -102,11 +102,11 @@ local config = {
 		},
 		openai = function()
 			return require("codecompanion.adapters").extend("openai", {
-				-- schema = {
-				-- 	model = {
-				-- 		default = "gpt-5.4-mini",
-				-- 	},
-				-- },
+				schema = {
+					model = {
+						default = "gpt-5.4-mini",
+					},
+				},
 				env = {
 					api_key = os.getenv("OPENAI_API_KEY"),
 				},
