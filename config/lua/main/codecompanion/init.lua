@@ -74,7 +74,7 @@ local config = {
 		chat = {
 			auto_scroll = false,
 			intro_message = "✨Helloworld",
-			show_settings = true,
+			show_settings = false,
 		},
 		action_palette = {
 			width = 95,
@@ -107,11 +107,11 @@ local config = {
 		},
 		openai = function()
 			return require("codecompanion.adapters").extend("openai", {
-				schema = {
-					model = {
-						default = "gpt-5.4-mini",
-					},
-				},
+				-- schema = {
+				-- 	model = {
+				-- 		default = "gpt-5.4-mini",
+				-- 	},
+				-- },
 				env = {
 					api_key = os.getenv("OPENAI_API_KEY"),
 				},
@@ -317,6 +317,34 @@ local config = {
 	},
 	extensions = {
 		spinner = {},
+		vectorcode = {
+			opts = {
+				tool_group = {
+					enabled = true,
+					extras = {},
+					collapse = false,
+				},
+				tool_opts = {
+					["*"] = {},
+					ls = {},
+					vectorise = {},
+					query = {
+						max_num = { chunk = -1, document = -1 },
+						default_num = { chunk = 50, document = 10 },
+						include_stderr = false,
+						use_lsp = false,
+						no_duplicate = true,
+						chunk_mode = false,
+						summarise = {
+							enabled = false,
+							query_augmented = true,
+						},
+					},
+					files_ls = {},
+					files_rm = {},
+				},
+			},
+		},
 		history = {
 			enabled = true,
 			opts = {
@@ -347,7 +375,6 @@ local config = {
 					browse_summaries_keymap = "<localleader>sb",
 				},
 
-				-- Vectorcode
 				memory = {
 					auto_create_memories_on_summary_generation = true,
 					vectorcode_exe = "vectorcode",
@@ -359,7 +386,6 @@ local config = {
 				},
 			},
 		},
-		vectorcode = {},
 	},
 }
 
@@ -403,11 +429,21 @@ require("lz.n").load({
 	},
 })
 
+vim.cmd.packadd("vectorcode.nvim")
+require("vectorcode").setup()
+
 --[[
 TODO:prompt snippet
   from what is provided in this snippet:
     <here> <- inserted from visual mode
   what does this mean:
     <cursor insert>
+
+> Context:
+> - <tool>file_search</tool>
+> - <tool>vectorcode_files_ls</tool>
+
+@{vectorcode_files_ls} @{file_search}
+What files are most important
 ]]
 -- commit gen from term
