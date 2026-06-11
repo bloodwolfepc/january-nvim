@@ -359,6 +359,7 @@ local config = {
 				},
 			},
 		},
+		vectorcode = {},
 	},
 }
 
@@ -377,13 +378,11 @@ require("lz.n").load({
 			util.addPacks(name, {
 				"codecompanion-spinner.nvim",
 				"codecompanion-history.nvim",
-				"vectorcode-nvim",
+				"vectorcode.nvim",
 			})
 		end,
 		after = function()
 			require("codecompanion").setup(config)
-			require("vectorcode").setup()
-
 			vim.cmd([[cab CC CodeCompanion]])
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = { "codecompanion" },
