@@ -23,8 +23,13 @@ local keymaps = {
 					i = "Chat Toggle",
 					a = "Actions",
 					C = "CLI",
-					d = "Command",
+					c = "Command",
 					e = "/educate",
+					m = "/commit",
+					d = "/explain",
+					l = "/lsp",
+					f = "/fix",
+					t = "/test",
 				},
 			},
 		},
@@ -342,23 +347,16 @@ local config = {
 					browse_summaries_keymap = "<localleader>sb",
 				},
 
-				-- Memory system (requires VectorCode CLI)
-				-- memory = {
-				-- 	-- Automatically index summaries when they are generated
-				-- 	auto_create_memories_on_summary_generation = true,
-				-- 	-- Path to the VectorCode executable
-				-- 	vectorcode_exe = "vectorcode",
-				-- 	-- Tool configuration
-				-- 	tool_opts = {
-				-- 		-- Default number of memories to retrieve
-				-- 		default_num = 10,
-				-- 	},
-				-- 	-- Enable notifications for indexing progress
-				-- 	notify = true,
-				-- 	-- Index all existing memories on startup
-				-- 	-- (requires VectorCode 0.6.12+ for efficient incremental indexing)
-				-- 	index_on_startup = false,
-				-- },
+				-- Vectorcode
+				memory = {
+					auto_create_memories_on_summary_generation = true,
+					vectorcode_exe = "vectorcode",
+					tool_opts = {
+						default_num = 10,
+					},
+					notify = true,
+					index_on_startup = false,
+				},
 			},
 		},
 	},
@@ -379,10 +377,12 @@ require("lz.n").load({
 			util.addPacks(name, {
 				"codecompanion-spinner.nvim",
 				"codecompanion-history.nvim",
+				"vectorcode-nvim",
 			})
 		end,
 		after = function()
 			require("codecompanion").setup(config)
+			require("vectorcode").setup()
 
 			vim.cmd([[cab CC CodeCompanion]])
 			vim.api.nvim_create_autocmd("FileType", {
@@ -404,10 +404,6 @@ require("lz.n").load({
 	},
 })
 
--- vim.keymap.set("n", "<leader>ac", function()
--- 	vim.cmd("split | terminal aichat")
--- end, { desc = "aichat session" })
-
 --[[
 TODO:prompt snippet
   from what is provided in this snippet:
@@ -415,3 +411,4 @@ TODO:prompt snippet
   what does this mean:
     <cursor insert>
 ]]
+-- commit gen from term

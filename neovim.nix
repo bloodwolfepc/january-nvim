@@ -50,7 +50,7 @@ let
     akkuPackages.scheme-langserver
 
     texlab
-    texliveFull
+    texliveInfraOnly
     texlivePackages.latexmk
 
     typst
@@ -69,6 +69,8 @@ let
     soundfont-ydp-grand
     git
     imagemagick
+
+    vectorcode
     (pkgs.aspellWithDicts (
       ds: with ds; [
         en
@@ -194,12 +196,11 @@ let
     nvim-dap-python
     nvim-dap-go
     gitsigns-nvim
-    ChatGPT-nvim
-    avante-nvim
     img-clip-nvim
     codecompanion-nvim
     codecompanion-history-nvim
     codecompanion-spinner-nvim
+    vectorcode-nvim
     vimwiki
     markdown-preview-nvim
     #treesitter
