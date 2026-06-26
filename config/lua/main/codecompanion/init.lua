@@ -122,6 +122,7 @@ local config = {
 		opts = {
 			date_format = "%Y-%m-%d",
 		},
+		cli = {},
 		chat = {
 			adapter = {
 				name = "openai",
@@ -317,7 +318,20 @@ local config = {
 	},
 	extensions = {
 		spinner = {},
+		-- mcphub = {
+		-- 	callback = "mcphub.extensions.codecompanion",
+		-- 	opts = {
+		-- 		make_tools = true,
+		-- 		show_server_tools_in_chat = true,
+		-- 		add_mcp_prefix_to_tool_names = true,
+		-- 		show_result_in_chat = true,
+		-- 		format_tool = nil,
+		-- 		make_vars = true,
+		-- 		make_slash_commands = true,
+		-- 	},
+		-- },
 		vectorcode = {
+			enabled = true,
 			opts = {
 				tool_group = {
 					enabled = true,
@@ -325,13 +339,17 @@ local config = {
 					collapse = false,
 				},
 				tool_opts = {
-					["*"] = {},
+					["*"] = {
+						require_approval_before = false,
+						require_cmd_approval = false,
+						requires_approval = false,
+					},
 					ls = {},
 					vectorise = {},
 					query = {
 						max_num = { chunk = -1, document = -1 },
 						default_num = { chunk = 50, document = 10 },
-						include_stderr = false,
+						include_stderr = true,
 						use_lsp = false,
 						no_duplicate = true,
 						chunk_mode = false,
@@ -405,11 +423,17 @@ require("lz.n").load({
 				"codecompanion-spinner.nvim",
 				"codecompanion-history.nvim",
 				"vectorcode.nvim",
+				"mcphub.nvim",
 			})
 		end,
 		after = function()
+			-- blink before cc
+			-- require("mcphub").setup()
+			require("vectorcode").setup( -- before cc
+			)
 			require("codecompanion").setup(config)
-			vim.cmd([[cab CC CodeCompanion]])
+
+			vim.cmd([[cab cc CodeCompanion]])
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = { "codecompanion" },
 				callback = function(ev)
@@ -429,21 +453,10 @@ require("lz.n").load({
 	},
 })
 
-vim.cmd.packadd("vectorcode.nvim")
-require("vectorcode").setup()
-
 --[[
 TODO:prompt snippet
   from what is provided in this snippet:
     <here> <- inserted from visual mode
   what does this mean:
     <cursor insert>
-
-> Context:
-> - <tool>file_search</tool>
-> - <tool>vectorcode_files_ls</tool>
-
-@{vectorcode_files_ls} @{file_search}
-What files are most important
 ]]
--- commit gen from term

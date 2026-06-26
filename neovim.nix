@@ -35,11 +35,15 @@ let
     harper
     clang-tools
     bash-language-server
+    awk-language-server
+    cmake-language-server
+    racket
     pyright
     gopls
     phpactor
     # phpPackages.psalm
     yaml-language-server
+    kdlfmt
     vscode-langservers-extracted
     tailwindcss-language-server
     marksman
@@ -69,6 +73,7 @@ let
     soundfont-ydp-grand
     git
     imagemagick
+    github-mcp-server
 
     vectorcode
     (pkgs.aspellWithDicts (
@@ -100,6 +105,8 @@ let
       typst-preview-nvim
       vim-table-mode
       snacks-nvim
+
+      zellij-nav-nvim
     ]
     ++ [ initLuaLib ];
 
@@ -201,6 +208,8 @@ let
     codecompanion-history-nvim
     codecompanion-spinner-nvim
     vectorcode-nvim
+    mcphub-nvim
+
     vimwiki
     markdown-preview-nvim
     #treesitter

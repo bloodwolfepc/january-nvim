@@ -31,6 +31,7 @@ require("lz.n").load({
 					lua = { "stylua", lsp_format = "fallback" },
 					typst = { "typstyle" },
 					lilypond = { "lilypond" },
+					kdl = { "kdlfmt" },
 				},
 			})
 		end,

@@ -15,6 +15,7 @@
       ...
     }@inputs:
     let
+
       inherit (self) outputs;
       supportedSystems = [
         "x86_64-linux"
@@ -28,7 +29,18 @@
         import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          nixpkgs.overlays = [ neorg-overlay.overlays.default ];
+          nixpkgs.overlays = [
+            neorg-overlay.overlays.default
+            (final: prev: {
+              vimPlugins = prev.vimPlugins // {
+                typst-preview-nvim = prev.vimPlugins.typst-preview-nvim.overrideAttrs (old: {
+                  postPatch = ''
+                    sed -i "s/'--no-open',/'--no-open',\n    '--verbose',/" lua/typst-preview/servers/factory.lua
+                  '';
+                });
+              };
+            })
+          ];
         }
       );
     in

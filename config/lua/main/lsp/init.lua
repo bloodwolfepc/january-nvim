@@ -68,6 +68,7 @@ require("lz.n").load({
 			vim.lsp.enable("scheme_langserver")
 			vim.lsp.enable("phpactor")
 			vim.lsp.enable("texlab")
+			vim.lsp.enable("racket_langserver")
 
 			--vim.lsp.enable("harper_ls")
 

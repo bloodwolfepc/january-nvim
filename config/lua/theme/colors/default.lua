@@ -9,9 +9,11 @@ local ret = {
 	g5 = "#6700c3",
 	g6 = "#5757ea",
 
+	--162 131 255
 	comment = "#008080",
 
 	fg = "#c0caf5",
+	-- 192, 202, 245
 	bg_float = "#1e2030",
 
 	lavender = "#e6e6fa",

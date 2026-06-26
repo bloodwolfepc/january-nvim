@@ -1,9 +1,12 @@
 local util = require("main.util")
 local config = {
-	-- open_cmd = "zathura %s",
 	open_cmd = "firefox %s",
 	invert_colors = "always",
 	folow_cursor = true,
+	-- dependencies_bin = { -- FIXES: https://github.com/chomosuke/typst-preview.nvim/issues/136
+	-- 	tinymist = "tinymist",
+	-- 	websocat = "websocat",
+	-- },
 }
 local keymaps = {
 	{
