@@ -6,6 +6,7 @@
   vimPlugins,
   lib,
   pkgs,
+  extraPackages,
 }:
 let
   packageName = "nvim";
@@ -108,7 +109,10 @@ let
 
       zellij-nav-nvim
     ]
-    ++ [ initLuaLib ];
+    ++ [
+      initLuaLib
+      extraPackages.fcitx-nvim
+    ];
 
   optPlugins = with vimPlugins; [
     telescope-nvim

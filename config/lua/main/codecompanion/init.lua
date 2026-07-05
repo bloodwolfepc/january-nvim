@@ -342,7 +342,6 @@ local config = {
 					["*"] = {
 						require_approval_before = false,
 						require_cmd_approval = false,
-						requires_approval = false,
 					},
 					ls = {},
 					vectorise = {},

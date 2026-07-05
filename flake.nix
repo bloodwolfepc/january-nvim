@@ -51,7 +51,7 @@
           pkgs = nixpkgsFor.${system};
         in
         rec {
-          nvim = pkgs.callPackage ./neovim.nix { };
+          nvim = pkgs.callPackage ./neovim.nix { inherit extraPackages; };
           extraPackages = import ./packages { inherit pkgs; };
           default = nvim;
           neorg = extraPackages.neorg;
