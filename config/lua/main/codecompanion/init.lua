@@ -67,7 +67,10 @@ local config = {
 	log_level = "DEBUG",
 	prompt_library = {
 		markdown = {
-			dirs = { prompt_util.prompts_dir, vim.fn.getcwd() .. "/.prompts" },
+			dirs = {
+				vim.fn.getcwd() .. "/.prompts",
+				prompt_util.prompts_dir,
+			},
 		},
 	},
 	display = {

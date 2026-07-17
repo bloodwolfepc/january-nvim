@@ -13,6 +13,8 @@ local globals = {
 }
 
 local options = {
+	exrc = true,
+	secure = true,
 	clipboard = "unnamedplus",
 	termguicolors = true,
 	backup = false,

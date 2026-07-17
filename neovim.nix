@@ -173,6 +173,7 @@ let
     blink-cmp-yanky
     blink-emoji-nvim
     blink-cmp-nixpkgs-maintainers
+    blink-cmp-latex
 
     nvim-cmp
     luasnip

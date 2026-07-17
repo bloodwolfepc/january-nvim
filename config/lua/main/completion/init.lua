@@ -25,6 +25,7 @@ local config = {
 			"path",
 			"lsp",
 			"buffer",
+			"latex",
 			"avante",
 			"snippets",
 			"lazydev",
@@ -75,6 +76,14 @@ local config = {
 				},
 			},
 
+			latex = {
+				name = "Latex",
+				module = "blink-cmp-latex",
+				opts = {
+					insert_command = false,
+				},
+			},
+
 			emoji = {
 				module = "blink-emoji",
 				name = "Emoji",
@@ -109,6 +118,7 @@ require("lz.n").load({
 				"blink-cmp-git",
 				"blink-emoji.nvim",
 				"blink-cmp-avante",
+				"blink-cmp-latex",
 			})
 		end,
 		after = function()
