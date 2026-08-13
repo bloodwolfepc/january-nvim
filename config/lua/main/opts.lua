@@ -10,7 +10,7 @@ local globals = {
 	netrw_mouse = 2,
 	editorconfig = true,
 	rust_recommended_style = false,
-	clipboard = "osc52",
+	-- clipboard = "osc52",
 }
 
 local options = {
