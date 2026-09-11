@@ -5,6 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     lilypond-midi-input.url = "github:niveK77pur/lilypond-midi-input";
+    flake-utils.url = "github:numtide/flake-utils";
+    home-manager.url = "github:nix-community/home-manager";
   };
 
   outputs =
@@ -12,50 +14,68 @@
       self,
       nixpkgs,
       neorg-overlay,
+      flake-utils,
+      home-manager,
       ...
-    }@inputs:
-    let
-
-      inherit (self) outputs;
-      supportedSystems = [
-        "x86_64-linux"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      nixpkgsFor = forAllSystems (
-        system:
-        import nixpkgs {
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          nixpkgs.overlays = [
+          overlays = [
             neorg-overlay.overlays.default
-            (final: prev: {
-              vimPlugins = prev.vimPlugins // {
-                typst-preview-nvim = prev.vimPlugins.typst-preview-nvim.overrideAttrs (old: {
-                  postPatch = ''
-                    sed -i "s/'--no-open',/'--no-open',\n    '--verbose',/" lua/typst-preview/servers/factory.lua
-                  '';
-                });
-              };
-            })
           ];
-        }
-      );
-    in
-    {
-      packages = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in
-        rec {
-          nvim = pkgs.callPackage ./neovim.nix { inherit extraPackages; };
-          extraPackages = import ./packages { inherit pkgs; };
-          default = nvim;
-          neorg = extraPackages.neorg;
-        }
-      );
-    };
+        };
+        extraPkgs = import ./packages { inherit pkgs; };
+
+        lib = pkgs.lib;
+        presets = import ./nix/presets.nix { inherit lib; };
+
+        mkNvim =
+          enabledModules:
+          let
+
+            install = import ./nix/module.nix {
+              inherit
+                lib
+                pkgs
+                enabledModules
+                extraPkgs
+                ;
+            };
+          in
+          pkgs.callPackage ./neovim.nix {
+            runtimeDeps = install.runtimeDeps;
+            startPlugins = install.startPlugins;
+            optPlugins = install.optPlugins;
+            configPath = ./.;
+            enabledModulesFile = install.enabledModulesFile;
+          };
+
+        minimal = mkNvim presets.minimal;
+        regular = mkNvim presets.regular;
+        lilypond = mkNvim presets.lilypond;
+        full = mkNvim (presets.full ./lua/jnvconf);
+      in
+      {
+        packages = {
+          inherit
+            minimal
+            regular
+            lilypond
+            full
+            ;
+          default = minimal;
+        };
+
+        apps.default = {
+          type = "app";
+          program = "${minimal}/bin/nvim";
+        };
+
+        homeManagerModules.default = import ./nix/home-manager-module.nix;
+      }
+    );
 }
