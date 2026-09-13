@@ -12,6 +12,11 @@
       always = with pkgs.vimPlugins; [
         vimtex
       ];
+      forModule = {
+        blink = with pkgs.vimPlugins; [
+          blink-cmp-latex
+        ];
+      };
     };
   };
 }

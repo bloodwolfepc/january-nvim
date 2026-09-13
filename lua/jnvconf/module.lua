@@ -24,39 +24,58 @@ local function read_manifest()
 	return cache
 end
 
-function M.group(prefix)
-	local out = {}
-	local pattern = "^" .. vim.pesc(prefix) .. "%."
+local function is_excluded(name, exclude)
+	if type(exclude) ~= "table" then
+		return false
+	end
 
-	for _, mod in ipairs(read_manifest()) do
-		if type(mod) == "string" and mod:match(pattern) then
-			out[#out + 1] = mod
+	for _, item in ipairs(exclude) do
+		if item == name then
+			return true
 		end
 	end
 
-	return out
+	return false
 end
 
-function M.require_group(prefix)
-	local out = {}
+local function normalize_module_name(name)
+	return "jnvconf." .. name
+end
 
-	for _, mod in ipairs(M.group(prefix)) do
-		local ok, value = pcall(require, "jnvconf." .. mod)
-		if ok and type(value) == "table" then
-			out[#out + 1] = value
+function M.forModules(cb, opts)
+	opts = opts or {}
+
+	local modules = opts.modules or read_manifest()
+	local submodules = opts.submodules
+	local exclude = opts.exclude
+	local file = opts.file or "init"
+
+	for _, mod in ipairs(modules) do
+		if type(mod) == "string" then
+			local include = true
+
+			if type(submodules) == "table" and #submodules > 0 then
+				include = false
+				for _, prefix in ipairs(submodules) do
+					if mod == prefix or mod:match("^" .. vim.pesc(prefix) .. "%.") then
+						include = true
+						break
+					end
+				end
+			end
+
+			if include and not is_excluded(mod, exclude) then
+				local req = normalize_module_name(mod)
+				if file ~= "init" then
+					req = req .. "." .. file
+				end
+
+				local ok, value = pcall(require, req)
+				if ok then
+					cb(value, mod)
+				end
+			end
 		end
-	end
-
-	return out
-end
-
-function M.langs()
-	return M.require_group("langs")
-end
-
-function M.forLang(fn)
-	for _, lang in ipairs(M.langs()) do
-		fn(lang)
 	end
 end
 

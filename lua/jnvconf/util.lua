@@ -222,4 +222,25 @@ M.requireForModule = function(module, submodules)
 	end
 end
 
+M.unique_merge = function(head, tail)
+	local out = {}
+	local seen = {}
+
+	for _, v in ipairs(head or {}) do
+		if not seen[v] then
+			seen[v] = true
+			out[#out + 1] = v
+		end
+	end
+
+	for _, v in ipairs(tail or {}) do
+		if not seen[v] then
+			seen[v] = true
+			out[#out + 1] = v
+		end
+	end
+
+	return out
+end
+
 return M

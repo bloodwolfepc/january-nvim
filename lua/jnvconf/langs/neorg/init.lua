@@ -233,6 +233,12 @@ require("lz.n").load({
 	},
 })
 
+-- return {
+-- 	telescope = {
+-- 		addpacks = {},
+-- 	},
+-- }
+
 -- require("neorg").setup(config)
 -- vim.api.nvim_create_autocmd("FileType", {
 -- 	pattern = "norg",

@@ -14,13 +14,18 @@ let
       "lsp"
       "lint"
       "alpha"
+      "blink"
       "codecompanion"
-      "debug"
-      "format"
+      "dap"
+      "conform"
       "gitsigns"
+      "langs.all"
       "langs.c"
+      "langs.frontend"
       "langs.nix"
       "langs.lua"
+      "langs.neorg"
+      "langs.typst"
     ]
   );
 

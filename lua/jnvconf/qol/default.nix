@@ -39,7 +39,6 @@
         eyeliner-nvim
         bufferline-nvim
         wrapping-nvim
-        taskwarrior3
         taskwiki
         lazydev-nvim
         plenary-nvim

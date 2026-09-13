@@ -104,3 +104,26 @@ require("lz.n").load({
 		end,
 	},
 })
+
+return {
+	conform = {
+		config = {
+			formatters = {
+				lilypond = {
+					command = "ly",
+					args = { "reformat" },
+				},
+			},
+			formatters_by_ft = {
+				lilypond = { "lilypond" },
+			},
+		},
+	},
+	-- lint = {
+	--   config = {
+	--     linters = {
+	--       lilypond = lilypond_parser("./openlilyLib"),
+	--     },
+	--   },
+	-- },
+}

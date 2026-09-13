@@ -9,7 +9,7 @@
     optPlugins = {
       always = with pkgs.vimPlugins; [
         nvim-treesitter-textobjects
-        nvim-ts-autotag
+        nvim-ts-autotag # Automatically closes and renames HTML/JSX/TSX tags
         nvim-ts-context-commentstring
         comment-nvim
         todo-comments-nvim

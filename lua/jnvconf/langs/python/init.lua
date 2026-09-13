@@ -1,0 +1,5 @@
+return {
+	lsp = {
+		pyright = {},
+	},
+}

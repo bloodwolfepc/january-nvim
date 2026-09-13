@@ -1,14 +1,16 @@
 local util = require("jnvconf.util")
+
 local config = {
 	open_cmd = "firefox %s",
 	invert_colors = "always",
 	folow_cursor = true,
-	dependencies_bin = { -- FIXES: https://github.com/chomosuke/typst-preview.nvim/issues/136
+	dependencies_bin = {
 		tinymist = "tinymist",
 		websocat = "websocat",
 	},
 	extra_args = { "--verbose" },
 }
+
 local keymaps = {
 	{
 		mode = { "n" },
@@ -23,20 +25,37 @@ local keymaps = {
 		end,
 		keys = {
 			["<leader>"] = {
-				["s"] = {
-					["u"] = "Update",
-					["p"] = "",
-					["s"] = "Stop",
-					["t"] = "Toggle",
-					["cf"] = "FollowCuror",
-					["cn"] = "NoFollowCursor",
-					["ct"] = "FollowCursorToggle",
-					["cs"] = "SyncCursor",
+				s = {
+					u = "Update",
+					p = "",
+					s = "Stop",
+					t = "Toggle",
+					cf = "FollowCuror",
+					cn = "NoFollowCursor",
+					ct = "FollowCursorToggle",
+					cs = "SyncCursor",
 				},
 			},
 		},
 	},
 }
+
+require("lz.n").load({
+	{
+		"typst-preview.nvim",
+		ft = { "typ", "typst" },
+		event = "DeferredUIEnter",
+		after = function()
+			require("typst-preview").setup(config)
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "typ", "typst" },
+				callback = function()
+					util.keymapsForVim(keymaps)
+				end,
+			})
+		end,
+	},
+})
 
 require("lz.n").load({
 	{
@@ -54,3 +73,23 @@ require("lz.n").load({
 		end,
 	},
 })
+--
+-- return {
+-- 	lsp = {
+-- 		tinymist = {
+-- 			filetypes = { "typst" },
+-- 			settings = {
+-- 				formatterMode = "typstyle",
+-- 				formatterIndentSize = 2,
+-- 				semanticTokens = "disable",
+-- 			},
+-- 		},
+-- 	},
+-- 	conform = {
+-- 		config = {
+-- 			formatters_by_ft = {
+-- 				typst = { "typstyle" },
+-- 			},
+-- 		},
+-- 	},
+-- }

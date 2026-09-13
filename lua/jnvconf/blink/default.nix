@@ -5,12 +5,11 @@
     blink-cmp-dictionary
     blink-cmp-words
     blink-cmp-spell
-    blink-cmp-latex
     blink-cmp-git
-    blink-cmp-avante
-    blink-cmp-yanky
     blink-emoji-nvim
+    blink-cmp-yanky
     blink-cmp-latex
+    #TODO: Needs setup
     luasnip
     friendly-snippets
     lspkind-nvim

@@ -5,9 +5,10 @@
       always = with pkgs.vimPlugins; [
         neorg
         neorg-interim-ls
+        neorg-telescope
       ];
       forModule = {
-        treesitter = with pkgs.vimPlugins; [
+        telescope = with pkgs.vimPlugins; [
           neorg-telescope
         ];
       };

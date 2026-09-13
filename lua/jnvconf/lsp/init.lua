@@ -1,4 +1,5 @@
 local util = require("jnvconf.util")
+local module = require("jnvconf.module")
 
 require("lz.n").load({
 	{
@@ -12,42 +13,25 @@ require("lz.n").load({
 		end,
 		after = function()
 			require("lazydev").setup()
-
-			vim.lsp.config("tinymist", {
-				filetypes = { "typst" },
-				settings = {
-					formatterMode = "typstyle",
-					formatterIndentSize = 2,
-					semanticTokens = "disable",
-				},
-			})
-
-			local lsps = {
-				"tinymist",
-				"lua_ls",
-				"bashls",
-				"yamlls",
-				"jsonls",
-				"pyright",
-				"scheme_langserver",
-				"phpactor",
-				"texlab",
-				"racket_langserver",
-				-- "harper_ls",
-			}
-
-			vim.lsp.enable("nixd")
-			require("jnvconf.module").forLang(function(lang)
-				local lsp = lang.lsp
-				if type(lsp) == "table" then
-					for server_name, cfg in pairs(lsp) do
-						if type(cfg) == "table" and next(cfg) ~= nil then
-							vim.lsp.config(server_name, cfg)
-						end
-						table.insert(lsps, server_name)
-					end
+			local lsps = {}
+			module.forModules(function(m)
+				if type(m) ~= "table" then
+					return
 				end
-			end)
+
+				local lsp = m.lsp
+				if type(lsp) ~= "table" then
+					return
+				end
+
+				for server_name, cfg in pairs(lsp) do
+					if type(cfg) == "table" and next(cfg) ~= nil then
+						vim.lsp.config(server_name, cfg)
+					end
+					lsps[#lsps + 1] = server_name
+				end
+			end, { submodules = { "langs" } })
+
 			for _, server_name in ipairs(lsps) do
 				vim.lsp.enable(server_name)
 			end

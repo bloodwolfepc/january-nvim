@@ -13,7 +13,6 @@
         telescope-coc-nvim
         telescope-zoxide
         telescope-media-files-nvim
-        neorg-telescope
       ];
     };
   };

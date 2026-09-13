@@ -38,3 +38,13 @@ require("lz.n").load({
 		end,
 	},
 })
+
+return {
+	conform = {
+		config = {
+			formatters_by_ft = {
+				rust = { "rustfmt", lsp_format = "fallback" },
+			},
+		},
+	},
+}

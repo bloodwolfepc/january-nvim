@@ -52,3 +52,26 @@ require("lz.n").load({
 		end,
 	},
 })
+
+local defsources = require("jnvconf.blink.defsources")
+return {
+	blink = {
+		addpacks = { "blink-cmp-latex" },
+		config = {
+			sources = {
+				per_filetype = {
+					latex = util.unique_merge({ "latex" }, defsources),
+				},
+				providers = {
+					latex = {
+						name = "Latex",
+						module = "blink-cmp-latex",
+						opts = {
+							insert_command = false,
+						},
+					},
+				},
+			},
+		},
+	},
+}

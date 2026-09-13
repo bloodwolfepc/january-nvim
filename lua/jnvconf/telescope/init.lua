@@ -1,4 +1,5 @@
 local util = require("jnvconf.util")
+local module = require("jnvconf.module")
 
 local keymaps = {
 	{
@@ -75,7 +76,7 @@ local config = {
 	},
 }
 
-local extraConf = function()
+local function extraConf()
 	local extensions = {
 		"fzf",
 		"zoxide",
@@ -86,29 +87,45 @@ local extraConf = function()
 		"dap",
 		"undo",
 	}
-	require("jnvconf.module").forLang(function(lang)
-		local telescope = lang.telescope
-		if type(telescope) == "table" and type(telescope.load_extension) == "table" then
+
+	module.forModules(function(m)
+		if type(m) ~= "table" then
+			return
+		end
+
+		local telescope = m.telescope
+		if type(telescope) ~= "table" then
+			return
+		end
+
+		if type(telescope.load_extension) == "table" then
 			vim.list_extend(extensions, telescope.load_extension)
 		end
+
+		if type(telescope.config) == "table" then
+			config = vim.tbl_deep_extend("force", config, telescope.config)
+		end
 	end)
+
 	for _, v in ipairs(extensions) do
 		pcall(require("telescope").load_extension, v)
 	end
 
-	--fullscreen autocmd
 	local temp_showtabline
 	local temp_laststatus
+
 	function _G.global_telescope_find_pre()
 		temp_showtabline = vim.o.showtabline
 		temp_laststatus = vim.o.laststatus
 		vim.o.showtabline = 0
 		vim.o.laststatus = 0
 	end
+
 	function _G.global_telescope_leave_prompt()
 		vim.o.laststatus = temp_laststatus
 		vim.o.showtabline = temp_showtabline
 	end
+
 	vim.cmd([[
     augroup MyAutocmds
       autocmd!
@@ -117,6 +134,7 @@ local extraConf = function()
     augroup END
   ]])
 end
+
 require("lz.n").load({
 	{
 		"telescope.nvim",
@@ -142,8 +160,6 @@ require("lz.n").load({
 			extraConf()
 			require("telescope").setup(config)
 		end,
+		priority = 52,
 	},
 })
-
-extraConf()
-require("telescope").setup(config)
