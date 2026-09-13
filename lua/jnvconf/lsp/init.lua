@@ -13,7 +13,9 @@ require("lz.n").load({
 		end,
 		after = function()
 			require("lazydev").setup()
+
 			local lsps = {}
+
 			module.forModules(function(m)
 				if type(m) ~= "table" then
 					return
@@ -25,7 +27,7 @@ require("lz.n").load({
 				end
 
 				for server_name, cfg in pairs(lsp) do
-					if type(cfg) == "table" and next(cfg) ~= nil then
+					if type(cfg) == "table" then
 						vim.lsp.config(server_name, cfg)
 					end
 					lsps[#lsps + 1] = server_name
@@ -38,7 +40,6 @@ require("lz.n").load({
 		end,
 	},
 })
-
 -- vim.api.nvim_create_autocmd("FileType", {
 -- 	pattern = { "markdown", "text", "gitcommit", "norg", "typst" },
 -- 	callback = function()

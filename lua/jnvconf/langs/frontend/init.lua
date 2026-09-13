@@ -1,8 +1,10 @@
+-- vim.lsp.enable("ts_ls")
+
 return {
 	lsp = {
 		ts_ls = {},
 		eslint = {},
-		emmet_langauge_server = {},
+		emmet_language_server = {},
 		tailwindcss = {},
 		html = {},
 		cssls = {},

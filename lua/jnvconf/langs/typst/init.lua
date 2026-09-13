@@ -43,8 +43,10 @@ local keymaps = {
 require("lz.n").load({
 	{
 		"typst-preview.nvim",
-		ft = { "typ", "typst" },
-		event = "DeferredUIEnter",
+		event = {
+			event = "FileType",
+			pattern = { "typ", "typst" },
+		},
 		after = function()
 			require("typst-preview").setup(config)
 			vim.api.nvim_create_autocmd("FileType", {
@@ -57,39 +59,22 @@ require("lz.n").load({
 	},
 })
 
-require("lz.n").load({
-	{
-		"typst-preview.nvim",
-		ft = { "typ", "typst" },
-		event = "DeferredUIEnter",
-		after = function()
-			require("typst-preview").setup(config)
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = { "typ", "typst" },
-				callback = function()
-					util.keymapsForVim(keymaps) -- TOOD: If buffer in not focused, ummap
-				end,
-			})
-		end,
+return {
+	lsp = {
+		tinymist = {
+			filetypes = { "typst" },
+			settings = {
+				formatterMode = "typstyle",
+				formatterIndentSize = 2,
+				semanticTokens = "disable",
+			},
+		},
 	},
-})
---
--- return {
--- 	lsp = {
--- 		tinymist = {
--- 			filetypes = { "typst" },
--- 			settings = {
--- 				formatterMode = "typstyle",
--- 				formatterIndentSize = 2,
--- 				semanticTokens = "disable",
--- 			},
--- 		},
--- 	},
--- 	conform = {
--- 		config = {
--- 			formatters_by_ft = {
--- 				typst = { "typstyle" },
--- 			},
--- 		},
--- 	},
--- }
+	conform = {
+		config = {
+			formatters_by_ft = {
+				typst = { "typstyle" },
+			},
+		},
+	},
+}

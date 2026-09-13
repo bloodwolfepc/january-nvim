@@ -7,11 +7,11 @@
         neorg-interim-ls
         neorg-telescope
       ];
-      forModule = {
-        telescope = with pkgs.vimPlugins; [
-          neorg-telescope
-        ];
-      };
+    };
+    startPlugins.forModule = {
+      telescope = with pkgs.vimPlugins; [
+        neorg-telescope
+      ];
     };
   };
 }
