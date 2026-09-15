@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   install = {
-    optPlugins = {
+    startPlugins = {
       always = with pkgs.vimPlugins; [
         codecompanion-nvim
         codecompanion-history-nvim
