@@ -67,7 +67,7 @@
             lilypond
             full
             ;
-          default = minimal;
+          default = regular;
         };
 
         apps.default = {
