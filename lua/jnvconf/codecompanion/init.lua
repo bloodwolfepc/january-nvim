@@ -413,6 +413,7 @@ local config = {
 require("lz.n").load({
 	{
 		"codecompanion.nvim",
+		-- priority = 55,
 		keys = util.keymapsForLzn(keymaps),
 		cmd = {
 			"CodeCompanion",

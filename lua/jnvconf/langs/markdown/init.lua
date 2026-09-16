@@ -40,3 +40,30 @@ require("lz.n").load({
 		end,
 	},
 })
+
+local group = vim.api.nvim_create_augroup("CustomMarkdownHighlight", { clear = true })
+
+vim.api.nvim_create_autocmd({ "FileType", "ColorScheme" }, {
+	group = group,
+	pattern = { "markdown" },
+	callback = function()
+		vim.cmd([[silent! syntax clear MarkdownCustomTag]])
+		vim.cmd([[silent! syntax clear MarkdownCustomSubject]])
+		vim.cmd([[silent! syntax clear MarkdownCustomLine]])
+
+		vim.cmd([[
+      syntax region MarkdownCustomLine start=/^#\w\+/ end=/$/ contains=MarkdownCustomTag,MarkdownCustomSubject keepend
+      syntax match MarkdownCustomTag /#\w\+/ contained containedin=MarkdownCustomLine
+      syntax match MarkdownCustomSubject /\s\+\zs\w\+/ contained containedin=MarkdownCustomLine
+    ]])
+
+		vim.api.nvim_set_hl(0, "MarkdownCustomTag", {
+			fg = "#c678dd",
+			bold = true,
+		})
+
+		vim.api.nvim_set_hl(0, "MarkdownCustomSubject", {
+			fg = "#61afef",
+		})
+	end,
+})

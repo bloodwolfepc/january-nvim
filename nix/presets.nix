@@ -26,6 +26,7 @@ let
       "langs.lua"
       "langs.neorg"
       "langs.typst"
+      "langs.markdown"
     ]
   );
 
