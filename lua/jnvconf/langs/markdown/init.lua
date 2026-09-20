@@ -29,10 +29,10 @@ require("lz.n").load({
 	},
 	{
 		"render-markdown.nvim",
-		ft = { "markdown", "Avante", "codecompanion" },
+		ft = { "markdown", "codecompanion" },
 		after = function()
 			require("render-markdown").setup({
-				file_types = { "markdown", "Avante", "codecompanion" },
+				file_types = { "markdown", "codecompanion" },
 				latex = {
 					enabled = true,
 				},
@@ -47,6 +47,14 @@ vim.api.nvim_create_autocmd({ "FileType", "ColorScheme" }, {
 	group = group,
 	pattern = { "markdown" },
 	callback = function()
+		vim.bo.shiftwidth = 2
+		vim.bo.tabstop = 2
+		vim.bo.softtabstop = 2
+		vim.bo.expandtab = true
+		vim.bo.indentexpr = ""
+		vim.bo.cindent = false
+		vim.bo.smartindent = false
+
 		vim.cmd([[silent! syntax clear MarkdownCustomTag]])
 		vim.cmd([[silent! syntax clear MarkdownCustomSubject]])
 		vim.cmd([[silent! syntax clear MarkdownCustomLine]])
