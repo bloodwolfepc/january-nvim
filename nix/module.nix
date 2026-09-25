@@ -18,6 +18,7 @@ let
   discovered = discover root;
 
   enabledPaths = import ./enabled-paths.nix { inherit lib; } enabledModules;
+  collectInstall = import ./collect-install.nix { inherit lib; };
 
   enabledModulesFile = pkgs.writeText "enabled-modules.json" (builtins.toJSON enabledModules);
 
@@ -27,7 +28,7 @@ let
       moduleValue = lib.attrByPath m.rel { } moduleTree;
       install = moduleValue.install or { };
       moduleOn = enabledPaths.${builtins.concatStringsSep "." m.rel} or false;
-      collect = section: if moduleOn then (section.always or [ ]) else [ ];
+      collect = section: if moduleOn then collectInstall section enabledPaths else [ ];
     in
     {
       startPlugins = collect (install.startPlugins or { });

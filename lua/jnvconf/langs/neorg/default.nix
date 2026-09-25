@@ -5,7 +5,6 @@
       always = with pkgs.vimPlugins; [
         neorg
         neorg-interim-ls
-        neorg-telescope
       ];
     };
     startPlugins.forModule = {

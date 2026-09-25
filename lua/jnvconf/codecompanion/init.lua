@@ -119,18 +119,18 @@ local CCkeymaps = {
 		callback = "keymaps.yank_code",
 		description = "CC: yank_code",
 	},
-	buffer_sync_all = {
+	sync_all = {
 		modes = { n = "<localleader>ba" },
 		index = 9,
-		callback = "keymaps.buffer_sync_all",
-		description = "CC: buffer_sync_all",
+		callback = "keymaps.sync_all",
+		description = "CC: sync_all",
 		opts = { chat = { show_in_action_palette = false } },
 	},
-	buffer_sync_diff = {
+	sync_diff = {
 		modes = { n = "<localleader>bd" },
 		index = 10,
-		callback = "keymaps.buffer_sync_diff",
-		description = "CC: buffer_sync_diff",
+		callback = "keymaps.sync_diff",
+		description = "CC: sync_diff",
 		opts = { chat = { show_in_action_palette = false } },
 	},
 	next_chat = {
