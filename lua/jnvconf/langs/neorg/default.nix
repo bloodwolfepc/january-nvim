@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ extraPkgs, pkgs, ... }:
 {
   install = {
     startPlugins = {
-      always = with pkgs.vimPlugins; [
-        neorg
-        neorg-interim-ls
+      always = [
+        extraPkgs.neorg
+        pkgs.vimPlugins.neorg-interim-ls
       ];
     };
     startPlugins.forModule = {
