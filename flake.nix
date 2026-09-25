@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     lilypond-midi-input.url = "github:niveK77pur/lilypond-midi-input";
     flake-utils.url = "github:numtide/flake-utils";
     home-manager.url = "github:nix-community/home-manager";
@@ -13,7 +12,6 @@
     {
       self,
       nixpkgs,
-      neorg-overlay,
       flake-utils,
       home-manager,
       ...
@@ -24,9 +22,6 @@
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
-          overlays = [
-            neorg-overlay.overlays.default
-          ];
         };
         extraPkgs = import ./packages { inherit pkgs; };
 
