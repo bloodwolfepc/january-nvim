@@ -1,4 +1,7 @@
 local util = require("jnvconf.util")
+
+vim.filetype.add({ extension = { mdx = "markdown" } })
+
 -- local config = {}
 local keymaps = {
 	mode = { "n" },
