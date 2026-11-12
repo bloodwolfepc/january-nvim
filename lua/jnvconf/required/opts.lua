@@ -44,6 +44,12 @@ local options = {
 	tabstop = 2,
 	softtabstop = 2,
 	cursorline = false,
+	guicursor = {
+		"n-v-c-sm:block",
+		"i-ci-ve:ver25",
+		"r-cr-o:hor20",
+		"a:blinkwait700-blinkon500-blinkoff500",
+	},
 	number = true,
 	laststatus = 3,
 	showcmd = false,
